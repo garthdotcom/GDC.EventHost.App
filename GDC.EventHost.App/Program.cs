@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.IdentityModel.Logging;
 using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
+
+// debugging
+IdentityModelEventSource.ShowPII = true;
 
 builder.Services.AddAuthentication(o =>
 {
