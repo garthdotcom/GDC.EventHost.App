@@ -1,4 +1,4 @@
-using Azure.Identity;
+//using Azure.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -54,12 +54,12 @@ builder.Services.AddAuthentication(o =>
 
     });
 
-if (builder.Environment.IsProduction())
-{
-    builder.Configuration.AddAzureKeyVault(
-        new Uri($"https://{builder.Configuration["KeyVaultName"]}.vault.azure.net/"),
-        new DefaultAzureCredential());
-}
+//if (builder.Environment.IsProduction())
+//{
+//    builder.Configuration.AddAzureKeyVault(
+//        new Uri($"https://{builder.Configuration["KeyVaultName"]}.vault.azure.net/"),
+//        new DefaultAzureCredential());
+//}
 
 
 var app = builder.Build();
