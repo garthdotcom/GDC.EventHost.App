@@ -5,6 +5,8 @@ VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GDC.EventHost.App", "GDC.EventHost.App\GDC.EventHost.App.csproj", "{42733D0C-F91F-4975-A88B-992201EC8981}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GDC.EventHost.DTO", "..\GDC.EventHost.Common\GDC.EventHost.DTO\GDC.EventHost.DTO.csproj", "{2229FB26-23E4-48C1-8F3D-29ED587AF56D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{42733D0C-F91F-4975-A88B-992201EC8981}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42733D0C-F91F-4975-A88B-992201EC8981}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42733D0C-F91F-4975-A88B-992201EC8981}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2229FB26-23E4-48C1-8F3D-29ED587AF56D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2229FB26-23E4-48C1-8F3D-29ED587AF56D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2229FB26-23E4-48C1-8F3D-29ED587AF56D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2229FB26-23E4-48C1-8F3D-29ED587AF56D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
