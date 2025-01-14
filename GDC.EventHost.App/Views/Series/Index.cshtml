@@ -1,0 +1,40 @@
+﻿@using GDC.EventHost.DTO.Series;
+@model IEnumerable<SeriesDetailDto>
+<div class="row">
+    <div class="col-12">
+        <table class="table">
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Start</th>
+                <th>End</th>
+            </tr>
+            @foreach (var series in Model)
+            {
+                <tr>
+                    <td>@series.Title</td>
+                    <td>@series.Description</td>
+                    <td>@series.StartDate?.ToString("ddd d MMM")</td>
+                    <td>@series.EndDate?.ToString("ddd d MMM")</td>
+@*                     <td>
+                        <a asp-controller="Performance" asp-action="Index" asp-route-eventId="@evt.Id">Performances</a>
+                    </td> *@
+                </tr>
+            }
+        </table>
+        <a asp-action="Add">Add</a>
+    </div>
+</div>
+
+@if (User.Identity != null && User.Identity.IsAuthenticated)
+{
+    <table class="table table-sm">
+        @foreach (var claim in User.Claims)
+        {
+            <tr>
+                <td>@claim.Type</td>
+                <td>@claim.Value</td>
+            </tr>
+        }
+    </table>
+}

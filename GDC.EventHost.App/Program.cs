@@ -1,61 +1,66 @@
-//using Azure.Identity;
+using GDC.EventHost.App;
+using GDC.EventHost.App.ApiServices;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.IdentityModel.Logging;
-using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// debugging
 builder.Services.AddProblemDetails();
+//IdentityModelEventSource.ShowPII = true;
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
-
 builder.Services.AddRazorPages();
 
-JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
+builder.Services.AddScoped<ISeriesApiService, SeriesApiService>();
+builder.Services.AddScoped<EnsureAccessTokenFilter>();
 
-// debugging
-IdentityModelEventSource.ShowPII = true;
+builder.Services.AddSingleton(sp =>
+{
+    var client = new HttpClient { BaseAddress = new Uri(builder.Configuration["ApiUri"]) };
+    return client;
+});
+
+//JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 
 builder.Services.AddAuthentication(o =>
 {
     o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     o.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
 })
-    .AddCookie()
+    .AddCookie(o => o.Events.OnSigningOut =
+        async e => await e.HttpContext.RevokeRefreshTokenAsync())
+
     .AddOpenIdConnect(options =>
     {
-        options.Authority = builder.Configuration["AuthorityUri"];
-
+        options.Authority = builder.Configuration["IdpUri"];
         options.ClientId = "eventhost_web";
-        options.ClientSecret = builder.Configuration["ClientSecret"];
-
+        options.ClientSecret = builder.Configuration["WebClientSecret"];
         options.Scope.Clear();
         options.Scope.Add("openid");
         options.Scope.Add("profile");
         options.Scope.Add("email");
         options.Scope.Add("eventhost");
         options.Scope.Add("eventhostapi");
-        options.SaveTokens = true;
+        
         options.ResponseType = "code";
         options.GetClaimsFromUserInfoEndpoint = true;
+        options.SaveTokens = true;
 
-        options.ClaimActions.MapUniqueJsonKey("membershipnumber", "membershipnumber");
-        options.ClaimActions.MapUniqueJsonKey("birthdate", "birthdate");
-        options.ClaimActions.MapUniqueJsonKey("role", "role");
-        options.ClaimActions.MapUniqueJsonKey("permission", "permission");
+        //options.ClaimActions.MapUniqueJsonKey("membershipnumber", "membershipnumber");
+        //options.ClaimActions.MapUniqueJsonKey("birthdate", "birthdate");
+        //options.ClaimActions.MapUniqueJsonKey("role", "role");
+        //options.ClaimActions.MapUniqueJsonKey("permission", "permission");
 
         options.Events = new OpenIdConnectEvents
         {
             OnTokenResponseReceived = r =>
             {
-                var idToken = r.TokenEndpointResponse.IdToken;
+                var accessToken = r.TokenEndpointResponse.AccessToken;
                 return Task.CompletedTask;
             }
         };
-
     });
 
 //if (builder.Environment.IsProduction())
@@ -65,6 +70,7 @@ builder.Services.AddAuthentication(o =>
 //        new DefaultAzureCredential());
 //}
 
+builder.Services.AddOpenIdConnectAccessTokenManagement();
 
 var app = builder.Build();
 
