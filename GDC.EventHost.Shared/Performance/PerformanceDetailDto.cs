@@ -1,7 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-using static GDC.EventHost.App.DTOs.Enums;
+﻿using GDC.EventHost.Shared.PerformanceAsset;
+using System.ComponentModel.DataAnnotations;
+using static GDC.EventHost.Shared.Enums;
 
-namespace GDC.EventHost.App.DTOs
+namespace GDC.EventHost.Shared.Performance
 {
     public class PerformanceDetailDto
     {
@@ -42,5 +43,9 @@ namespace GDC.EventHost.App.DTOs
 
         [Display(Name = "SeatingPlan Name")]
         public string? SeatingPlanName { get; set; }
+
+        public PerformanceTicketCount? TicketCount { get; set; }
+
+        public List<PerformanceAssetDto> PerformanceAssets { get; set; } = [];
     }
 }

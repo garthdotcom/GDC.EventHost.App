@@ -1,4 +1,4 @@
-﻿using GDC.EventHost.App.DTOs;
+﻿using GDC.EventHost.Shared.Series;
 
 namespace GDC.EventHost.App.ApiServices
 {

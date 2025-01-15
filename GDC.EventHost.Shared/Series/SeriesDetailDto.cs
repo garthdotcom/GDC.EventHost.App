@@ -1,7 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-using static GDC.EventHost.App.DTOs.Enums;
+﻿using GDC.EventHost.Shared.Event;
+using System.ComponentModel.DataAnnotations;
+using static GDC.EventHost.Shared.Enums;
 
-namespace GDC.EventHost.App.DTOs
+namespace GDC.EventHost.Shared.Series
 {
     public class SeriesDetailDto
     {

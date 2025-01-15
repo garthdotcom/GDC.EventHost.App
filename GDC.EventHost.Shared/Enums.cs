@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace GDC.EventHost.App.DTOs
+namespace GDC.EventHost.Shared
 {
     public class Enums
     {
