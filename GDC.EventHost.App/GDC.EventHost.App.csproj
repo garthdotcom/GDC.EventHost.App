@@ -14,8 +14,4 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.3" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\GDC.EventHost.Common\GDC.EventHost.DTO\GDC.EventHost.DTO.csproj" />
-  </ItemGroup>
-
 </Project>

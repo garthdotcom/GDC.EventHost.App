@@ -1,5 +1,4 @@
-﻿using GDC.EventHost.DTO.Event;
-using GDC.EventHost.DTO.Series;
+﻿using GDC.EventHost.App.DTOs;
 
 namespace GDC.EventHost.App.ApiServices
 {
