@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
+﻿using Duende.IdentityModel.Client;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace GDC.EventHost.App
 {
@@ -17,7 +19,9 @@ namespace GDC.EventHost.App
             ActionExecutingContext context,
             ActionExecutionDelegate next)
         {
-            await _httpClient.EnsureAccessTokenInHeader(_config);
+            var token = await context.HttpContext.GetUserAccessTokenAsync();
+            _httpClient.SetBearerToken(token.AccessToken);
+            //await _httpClient.EnsureAccessTokenInHeader(_config);
             await next();
         }
     }

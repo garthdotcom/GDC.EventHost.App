@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 var builder = WebApplication.CreateBuilder(args);
 
 // debugging
-builder.Services.AddProblemDetails();
+//builder.Services.AddProblemDetails();
 //IdentityModelEventSource.ShowPII = true;
 
 builder.Services.AddControllersWithViews();
@@ -22,16 +22,19 @@ builder.Services.AddSingleton(sp =>
     return client;
 });
 
-//JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
+// //turn off the automatic claims mapping
+// test JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 builder.Services.AddAuthentication(o =>
 {
     o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     o.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
 })
+    // subsequent requests
     .AddCookie(o => o.Events.OnSigningOut =
         async e => await e.HttpContext.RevokeRefreshTokenAsync())
 
+    // first time in
     .AddOpenIdConnect(options =>
     {
         options.Authority = builder.Configuration["IdpUri"];
@@ -43,15 +46,17 @@ builder.Services.AddAuthentication(o =>
         options.Scope.Add("email");
         options.Scope.Add("eventhost");
         options.Scope.Add("eventhostapi");
+        options.Scope.Add("offline_access");
         
         options.ResponseType = "code";
         options.GetClaimsFromUserInfoEndpoint = true;
-        options.SaveTokens = true;
+        options.SaveTokens = true;  // puts the access token in the identity cookie
 
-        //options.ClaimActions.MapUniqueJsonKey("membershipnumber", "membershipnumber");
-        //options.ClaimActions.MapUniqueJsonKey("birthdate", "birthdate");
-        //options.ClaimActions.MapUniqueJsonKey("role", "role");
-        //options.ClaimActions.MapUniqueJsonKey("permission", "permission");
+        // activate these
+        options.ClaimActions.MapUniqueJsonKey("membershipnumber", "membershipnumber");
+        options.ClaimActions.MapUniqueJsonKey("birthdate", "birthdate");
+        options.ClaimActions.MapUniqueJsonKey("role", "role");
+        options.ClaimActions.MapUniqueJsonKey("permission", "permission");
 
         options.Events = new OpenIdConnectEvents
         {
@@ -61,6 +66,12 @@ builder.Services.AddAuthentication(o =>
                 return Task.CompletedTask;
             }
         };
+
+        //options.TokenValidationParameters = new TokenValidationParameters
+        //{
+        //    RoleClaimType = JwtClaimTypes.Role,
+        //    NameClaimType = JwtClaimTypes.Name
+        //};
     });
 
 //if (builder.Environment.IsProduction())
@@ -70,6 +81,7 @@ builder.Services.AddAuthentication(o =>
 //        new DefaultAzureCredential());
 //}
 
+// manage refresh tokens
 builder.Services.AddOpenIdConnectAccessTokenManagement();
 
 var app = builder.Build();
