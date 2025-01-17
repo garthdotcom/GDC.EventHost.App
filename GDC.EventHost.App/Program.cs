@@ -1,3 +1,4 @@
+using Azure.Identity;
 using GDC.EventHost.App;
 using GDC.EventHost.App.ApiServices;
 using Microsoft.AspNetCore.Authentication;
@@ -74,12 +75,12 @@ builder.Services.AddAuthentication(o =>
         //};
     });
 
-//if (builder.Environment.IsProduction())
-//{
-//    builder.Configuration.AddAzureKeyVault(
-//        new Uri($"https://{builder.Configuration["KeyVaultName"]}.vault.azure.net/"),
-//        new DefaultAzureCredential());
-//}
+if (builder.Environment.IsProduction())
+{
+    builder.Configuration.AddAzureKeyVault(
+        new Uri($"https://{builder.Configuration["KeyVaultName"]}.vault.azure.net/"),
+        new DefaultAzureCredential());
+}
 
 // manage refresh tokens
 builder.Services.AddOpenIdConnectAccessTokenManagement();
