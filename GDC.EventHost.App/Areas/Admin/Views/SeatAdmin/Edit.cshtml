@@ -1,0 +1,56 @@
+﻿@using GDC.EventHost.App.Areas.Admin.ViewModels
+@model SeatEditVM
+
+<h4>Edit Seat / @Model.Seat.DisplayValue</h4>
+<br />
+
+<form asp-action="Edit" enctype="multipart/form-data" method="post" class="form-horizontal" role="form">
+
+    <div>
+        <strong>Please provide details for this seat:</strong>
+    </div>
+    <br />
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <input asp-for="Seat.Id" type="hidden" />
+    <input asp-for="Seat.ParentId" type="hidden" />
+
+    <div class="form-group">
+        <label asp-for="Seat.DisplayValue" class="col-md-2 control-label"></label>
+        <div class="col-md-5">
+            <input asp-for="Seat.DisplayValue" class="form-control" />
+            <span asp-validation-for="Seat.DisplayValue" class="text-danger"></span>
+        </div>
+    </div>
+ 
+    <div class="form-group">
+        <label asp-for="Seat.OrdinalValue" class="col-md-2 control-label"></label>
+        <div class="col-md-5">
+            <input asp-for="Seat.OrdinalValue" class="form-control" />
+            <span asp-validation-for="Seat.OrdinalValue" class="text-danger"></span>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label asp-for="Seat.SeatTypeId" class="col-md-2 control-label"></label>
+        <div class="col-md-5">
+            <select asp-for="Seat.SeatTypeId" asp-items="Model.SeatTypeList" class="form-control">
+                <option value="">-- Select One --</option>
+            </select>
+            <span asp-validation-for="Seat.SeatTypeId" class="text-danger"></span>
+        </div>
+    </div>
+
+    <br />
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-5">
+            <a class="btn btn-sm btn-outline-dark"
+               href="javascript:history.go(-1)">Cancel</a>&nbsp;
+            <input class="btn btn-sm btn-outline-dark"
+                   type="submit" value="Save" />
+        </div>
+    </div>
+
+</form>

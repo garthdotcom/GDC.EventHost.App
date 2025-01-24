@@ -1,0 +1,45 @@
+﻿@using GDC.EventHost.App.Areas.Admin.ViewModels.User
+@model RolesManagementVM
+
+<h4>Manage Roles for @Model.UserName</h4>
+
+<br />
+<table class="table table-condensed table-bordered">
+    <tr>
+        <th>Role Name</th>
+        <th>Actions</th>
+    </tr>
+
+@foreach (var userRole in Model.UserRoleVMs)
+{
+    <tr>
+        <td>
+            @userRole.RoleName
+        </td>
+        <td>
+            @if (userRole.HasRole)
+            {
+                <a asp-controller="UserAdmin" 
+                   asp-action="ToggleUserRole" 
+                   asp-route-userId="@userRole.UserId"
+                   asp-route-roleName="@userRole.RoleName"
+                   class="btn btn-sm btn-outline-dark">Remove</a>
+            }
+            else
+            {
+                <a asp-controller="UserAdmin" 
+                   asp-action="ToggleUserRole" 
+                   asp-route-userId="@userRole.UserId"
+                   asp-route-roleName="@userRole.RoleName"
+                   class="btn btn-sm btn-outline-dark">Add</a>
+            }         
+        </td>
+    </tr>
+}
+</table>
+
+<br />
+<a asp-controller="UserAdmin" 
+    asp-action="EditUser" 
+    asp-route-id="@Model.UserId"
+    class="btn btn-sm btn-outline-dark">Done</a>

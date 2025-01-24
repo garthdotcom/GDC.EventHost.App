@@ -1,0 +1,127 @@
+﻿@model EventListVM
+
+@section Scripts
+{
+  <script src="@Url.Content("~/js/event.js")"></script>
+}
+
+<div class="container">
+
+    <div class="row eh-bottom-border-solid">
+        <div class="col-xl eh-left-just">
+            <h3>Events</h3>
+            <span style="position:absolute;top:5px;right:5px;">
+                <button class="filter-button" type="button" id="showFilterPanel">
+                    <i class="fas fa-undo fa-2x"></i>
+                </button>
+            </span>
+        </div>
+    </div>
+
+    <div class="row eh-bottom-border-solid">
+        <div class="col-xl-3 eh-background-pattern" id="searchMenu">
+            <span style="position:absolute;top:5px;right:5px;">
+                <button class="filter-button" type="button" id="hideFilterPanel">
+                    <i class="fas fa-times fa-2x" style="opacity:0.5"></i>
+                </button>
+            </span>
+            <br />
+            <form method="get" id="frmFilters">     
+                <div class="form-group">
+                    <h6>Find by Series</h6>
+                    <div class="input-group">
+                        @foreach (var seriesName in Model.SeriesNames)
+                        {
+                            var buttonName = "btn" + seriesName.Trim().Replace(" ","");
+                            <span style="padding:2px">
+                                <input type="submit" asp-for="SearchQuery" value="@seriesName" 
+                                       id="@buttonName" class="btn btn-sm btn-info" />
+                            </span>
+                        } 
+                    </div>
+                    <br />
+                    <h6>Find by Venue</h6>
+                    <div class="input-group">
+                        @foreach (var venueName in Model.VenueNames)
+                        {
+                            var buttonName = "btn" + venueName.Trim().Replace(" ","");
+                            <span style="padding:2px">
+                                <input type="submit" asp-for="SearchQuery" value="@venueName" 
+                                       id="@buttonName" class="btn btn-sm btn-info"/>
+                            </span>
+                        }
+                    </div>
+                    <br />
+                    <h6>Find by Month</h6>
+                    <div class="input-group">
+                        @foreach (var monthName in Model.MonthNames)
+                        {
+                            var buttonName = "btn" + monthName.Trim().Replace(" ","");
+                            <span style="padding:2px">
+                                <input type="submit" asp-for="SearchQuery" value="@monthName" 
+                                       id="@buttonName" class="btn btn-sm btn-info"/>
+                            </span>
+                        }
+                    </div>
+                    <br />
+                    <button id="btnResetFilter" 
+                            class="btn btn-sm btn-outline-secondary"
+                            style="width:100px">Reset</button>
+                    @*<br />
+                    <br />
+                    <input type="submit" 
+                           asp-for="SearchQuery" 
+                           value="All"
+                           class="btn btn-sm btn-dark"
+                           style="width:100px"/>*@
+                </div>
+            </form>
+            <br />
+        </div>
+        <div class="col-xl">
+            @if (Model.EventList.Count == 0)
+            {
+                var message = "Sorry, no events were found for your selection. Please try again.";
+                <div>
+                    <div class="row eh-row-spacer">&nbsp;</div>
+                    <partial name="_TextCard" model="@message" />
+                </div>
+            }
+            else
+            {
+                @foreach (var evt in Model.EventList)
+                {
+                    <div class="row eh-row-spacer">&nbsp;</div>
+                    <partial name="_EventCard" model="evt" />
+                }
+
+                <div class="row">
+                    <div class="col-xl-12 eh-thumbnail" style="text-align:center">
+                        @{
+                            var prevDisabled = !Model.EventList.HasPreviousPage ? "disabled" : "";
+                            var nextDisabled = !Model.EventList.HasNextPage ? "disabled" : "";
+                        }
+
+                        <a asp-action="List"
+                            asp-route-pageNumber="@(Model.EventList.PageIndex - 1)"
+                            asp-route-searchQuery="@ViewData["CurrentFilter"]"
+                            class="btn btn-sm btn-link text-dark @prevDisabled">
+                            @Html.Raw("<")
+                        </a>
+
+                        <span class="btn btn-sm text-dark">
+                            @(Model.EventList.PageIndex) of @(Model.EventList.TotalPages)
+                        </span>
+
+                        <a asp-action="List"
+                            asp-route-pageNumber="@(Model.EventList.PageIndex + 1)"
+                            asp-route-searchQuery="@ViewData["CurrentFilter"]"
+                            class="btn btn-sm btn-link text-dark @nextDisabled">
+                            @Html.Raw(">")
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

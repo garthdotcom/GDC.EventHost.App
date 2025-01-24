@@ -1,0 +1,101 @@
+﻿@using GDC.EventHost.App.Areas.Admin.ViewModels
+@model OrderDetailVM
+
+<h4>Order # @Model.Order.Id.ToString().ToUpper().Replace("-","")</h4>
+<br />
+<div>
+    <strong>Date:</strong>
+    <span>
+        <time datetime="@Model.Order.Date.ToString("dd MMMM yyyy HH:mm")">
+            @Model.Order.Date.ToString("dd MMMM yyyy HH:mm")
+        </time>
+    </span>
+</div>
+<br />
+
+<div>
+    <strong>Status:</strong>
+    @Model.Order.OrderStatusValue
+</div>
+<br />
+
+@if (Model.Order.OrderItems.Count > 0)
+{
+    <div>
+        <table class="table">
+            <tr>
+                <th>
+                    Ticket
+                </th>
+                <th class="text-right">
+                    Price
+                </th>
+                <th></th>
+            </tr>
+            @foreach (var orderItem in Model.Order.OrderItems)
+            {
+                var stringBuilder = new System.Text.StringBuilder();
+
+                stringBuilder.Append($"{orderItem.Ticket.PerformanceTitle}, ");
+                stringBuilder.Append($"{orderItem.Ticket.PerformanceDate.ToString("dd MMMM yyyy HH:mm")}, ");
+                stringBuilder.Append($"{orderItem.Ticket.VenueName} - ");
+
+                @foreach (var seatPosition in orderItem.Ticket.Seat.SeatPositions)
+                {
+                    stringBuilder.Append($"{seatPosition.SeatPositionTypeName} {seatPosition.DisplayValue}, ");
+                }
+
+                stringBuilder.Append($" Seat {orderItem.Ticket.Seat.DisplayValue}");
+
+                <tr>
+                    <td class="text-left">@stringBuilder.ToString()</td>
+                    <td class="text-right">@orderItem.Ticket.Price.ToString("c")</td>
+                    <td>
+                        <a asp-area="Admin"
+                           asp-controller="OrderAdmin"
+                           asp-action="DeleteOrderItem"
+                           asp-route-orderId="@Model.Order.Id"
+                           asp-route-orderItemId="@orderItem.Id"
+                           class="btn btn-sm btn-outline-dark">Refund</a>
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td class="text-right">Total:</td>
+                <td class="text-right">
+                    @Model.OrderTotal.ToString("c") 
+                </td>
+                <td>&nbsp;</td>
+            </tr>
+        </table>
+    </div>
+    <br />
+}
+else
+{
+    <div>
+        <span>There are no items in this order. Please contact support.</span>
+    </div>
+}
+
+<div>
+    @if (Model.ReturnUrl.Contains("Edit"))
+    {
+        // we came from an edit page so redirect to list page
+        <a class="btn btn-sm btn-outline-dark"
+           asp-area="Admin"
+           asp-controller="OrderAdmin"
+           asp-action="Index">Back</a>
+    }
+    else
+    {
+        <a class="btn btn-sm btn-outline-dark"
+           href="@Model.ReturnUrl">Back</a>
+    }
+    &nbsp;
+    <a class="btn btn-sm btn-outline-dark"
+       asp-area="Admin"
+       asp-controller="OrderAdmin"
+       asp-action="Edit" 
+       asp-route-id="@Model.Order.Id">Edit</a>
+</div>

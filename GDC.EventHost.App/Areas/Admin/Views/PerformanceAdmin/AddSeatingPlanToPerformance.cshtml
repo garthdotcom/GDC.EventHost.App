@@ -1,0 +1,61 @@
+﻿@using GDC.EventHost.App.Areas.Admin.ViewModels
+@model AddSeatingPlanToPerformanceVM 
+
+<h4>Add SeatingPlan / @Model.PerformanceDetail.EventTitle</h4>
+<br />
+
+    <form asp-action="AddSeatingPlanToPerformance" enctype="multipart/form-data" method="post" class="form-horizontal" role="form">
+
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <input asp-for="PerformanceDetail.Id" type="hidden" />
+
+        @if (Model.SeatingPlanList != null && Model.SeatingPlanList.Count > 0)
+        {
+            <div>
+                <strong>Please choose an existing seating plan:</strong>
+            </div>
+            <br />
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">SeatingPlans</label>
+                <div class="col-md-5">
+                    <select asp-for="PerformanceDetail.SeatingPlanId" asp-items="Model.SeatingPlanList" class="form-control">
+                        <option value="">--Select One--</option>
+                    </select>
+                </div>
+            </div>
+            <br />
+            <div>
+                <strong>Or:</strong>
+            </div>
+            <br />
+        }
+        else
+        {
+            <div>
+                <strong>No seating plans currently exist for this venue.</strong>
+            </div>
+            <br />
+        }
+
+        <a class="btn btn-sm btn-outline-dark"
+           asp-area="Admin"
+           asp-controller="SeatingPlanAdmin"
+           asp-action="AddPosition"
+           asp-route-eventId="@Model.PerformanceDetail.Id">Create New SeatingPlan</a>
+        <br />
+
+        <br />
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-5">
+                <a class="btn btn-sm btn-outline-dark"
+                   href="@Model.ReturnUrl">Back</a>&nbsp;
+                <input class="btn btn-sm btn-outline-dark"
+                       type="submit" value="Save" />
+            </div>
+        </div>
+
+    </form>
+
+

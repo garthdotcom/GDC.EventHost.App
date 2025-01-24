@@ -1,0 +1,73 @@
+﻿@using GDC.EventHost.App.Areas.Admin.ViewModels
+@model SeatingPlanAddVM
+
+<h4>Create SeatingPlan</h4>
+<br />
+
+@if (Model.PositionsCreated)
+{
+    <form asp-action="Add" enctype="multipart/form-data" method="post" class="form-horizontal" role="form">
+        <div>
+            <strong>Please provide details for this seating plan:</strong>
+        </div>
+        <br />
+
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <input asp-for="PerformanceId" type="hidden" />
+
+        <div class="form-group">
+            <label asp-for="SeatingPlan.Name" class="col-md-2 control-label"></label>
+            <div class="col-md-5">
+                <input asp-for="SeatingPlan.Name" class="form-control" />
+                <span asp-validation-for="SeatingPlan.Name" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">Venue</label>
+            <div class="col-md-5">
+                <select asp-for="SeatingPlan.VenueId" asp-items="Model.VenueList" class="form-control">
+                    <option value="">--Select One--</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">Number of Seats per (row)</label>
+            <div class="col-md-5">
+                <input asp-for="SeatingPlan.NumberOfSeatsPerRow" class="form-control" />
+                <span asp-validation-for="SeatingPlan.NumberOfSeatsPerRow" class="text-danger"></span>
+            </div>
+        </div>
+
+        <br />
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-5">
+
+                <a class="btn btn-sm btn-outline-dark"
+                   asp-area="Admin" 
+                   asp-controller="SeatingPlanAdmin" 
+                   asp-action="Index">Cancel</a>&nbsp;
+
+                <input class="btn btn-sm btn-outline-dark"
+                       type="submit" value="Save" />
+            </div>
+        </div>
+
+    </form>
+}
+else
+{
+    <a class="btn btn-sm btn-outline-dark"
+       asp-area="Admin" 
+       asp-controller="SeatingPlanAdmin" 
+       asp-action="AddPosition">Add Positions</a>
+    <br />
+}
+<br />
+<a class="btn btn-sm btn-outline-dark"
+   asp-area="Admin" 
+   asp-controller="SeatingPlanAdmin" 
+   asp-action="Index">Back</a>

@@ -1,23 +1,7 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model HomeViewModel
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <br />
-    <a class="nav-link text-dark" asp-controller="Series">Series List</a>
-    @* <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p> *@
-</div>
-
-@* @if (User.Identity != null && User.Identity.IsAuthenticated)
-{
-    <table class="table table-sm">
-        @foreach (var claim in User.Claims)
-        {
-            <tr>
-                <td>@claim.Type</td>
-                <td>@claim.Value</td>
-            </tr>
-        }
-    </table>
-} *@
+<partial name="_Carousel" />
+<br />
+<h5>Upcoming Events</h5>
+<br />
+@await Component.InvokeAsync("UpcomingPerformances")

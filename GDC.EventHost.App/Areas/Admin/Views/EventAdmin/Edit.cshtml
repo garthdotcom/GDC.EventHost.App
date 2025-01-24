@@ -1,0 +1,67 @@
+﻿@using GDC.EventHost.App.Areas.Admin.ViewModels
+@model EventEditVM
+
+@if (string.IsNullOrEmpty(Model.Event.Title))
+{
+    <h4>Create Event</h4>
+}
+else
+{
+    <h4>Edit Event / @Model.Event.Title</h4>
+}
+<br />
+<form asp-action="Edit" enctype="multipart/form-data" method="post" class="form-horizontal" role="form">
+
+    <div>
+        <strong>Please provide details for this event:</strong>
+    </div>
+    <br />
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <input asp-for="Event.Id" type="hidden" />
+
+    <div class="form-group">
+        <label asp-for="Event.Title" class="col-md-2 control-label"></label>
+        <div class="col-md-5">
+            <input asp-for="Event.Title" class="form-control" />
+            <span asp-validation-for="Event.Title" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Event.Description" class="col-md-2 control-label"></label>
+        <div class="col-md-5">
+            <input asp-for="Event.Description" class="form-control" />
+            <span asp-validation-for="Event.Description" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Event.LongDescription" class="col-md-2 control-label"></label>
+        <div class="col-md-5">
+            <input asp-for="Event.LongDescription" class="form-control" />
+            <span asp-validation-for="Event.LongDescription" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 control-label">Series</label>
+        <div class="col-md-5">
+            <select asp-for="Event.SeriesId" asp-items="Model.SeriesList" class="form-control">
+                <option value="">--Select One--</option>
+            </select>
+        </div>
+    </div>
+
+    <br />
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-5">
+            <a class="btn btn-sm btn-outline-dark"
+               href="javascript:history.go(-1)">Cancel</a>&nbsp;
+            <input class="btn btn-sm btn-outline-dark"
+                   type="submit" value="Save" />
+        </div>
+    </div>
+
+</form>

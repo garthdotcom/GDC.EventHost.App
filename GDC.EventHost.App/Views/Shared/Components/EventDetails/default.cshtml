@@ -1,0 +1,30 @@
+﻿@model EventDetailsViewModel
+<h4>
+    <a asp-area=""
+       asp-controller="Events" 
+       asp-action="Detail" 
+       asp-route-id="@Model.Event.Id">
+       @Model.Event.Title</a>
+</h4>
+<div>
+    <br />
+    <div>
+        <strong>Series:</strong>
+        <a asp-area="" 
+           asp-controller="Series" 
+           asp-action="Detail" 
+           asp-route-id="@Model.Event.SeriesId">@Model.Event.SeriesTitle</a> 
+    </div>
+    <br />
+    <div style="column-count:2">
+        <p>
+            @Model.Event.LongDescription
+        </p>
+        @await Component.InvokeAsync("GetImage", 
+        new { 
+            entityId = Model.Event.Id, 
+            entityType = "Event", 
+            assetType = Enums.AssetTypeEnum.MediumImage
+        })
+    </div>
+</div>

@@ -1,0 +1,118 @@
+﻿@model TicketListVM
+
+<h4>Tickets / @Model.PerformanceTitle</h4>
+<br />
+<div>
+    <strong>Date:</strong>
+    @Model.EventDate.ToString("dddd, dd MMMM yyyy HH:mm")
+</div>
+<br />
+<div>
+    <strong>Venue:</strong>
+    @Model.VenueName
+</div>
+<br />
+
+@{    
+    var seatCount = 0;
+    var prevSeatNumber = 0;
+    var currSeatNumber = 0;
+    var cardStyle = "";
+    TicketDetailDto ticketDetail = null;
+}
+
+@while (seatCount < Model.Tickets.Count())
+{
+    // the point of this code is to break the seat rows into separate card decks
+    // that can take the no-wrap class. this will maintain the layout on the page
+    // and make it hopefully more understandable to the user.
+    ticketDetail = Model.Tickets.ElementAt(seatCount);
+
+    currSeatNumber = ticketDetail.Seat.OrdinalValue;
+
+    <div class="card-deck" style="margin-left:0">
+        <div class="row flex-nowrap flex-flow">
+      
+        @while (currSeatNumber > prevSeatNumber)
+        {
+            switch (ticketDetail.TicketStatusName)
+            {
+                case "Sold":
+                    cardStyle = "bg-secondary text-white";
+                    break;
+                case "UnSold":
+                    cardStyle = "bg-info text-white";
+                    break;
+                case "SalePending":
+                    cardStyle = "bg-secondary text-white";
+                    break;
+                case "Reserved":
+                    cardStyle = "bg-dark text-white";
+                    break;
+                default:
+                    cardStyle = "bg-secondary text-white";
+                    break;
+            }
+
+            <div class="col" style="padding:0;">
+
+                <div class="card h-100 @cardStyle" style="width:80px;margin-right:0">
+                    <div class="card-body" style="padding:5px">
+                        <div class="text-sm-center">
+                            @foreach (var seatPosition in ticketDetail.Seat.SeatPositions)
+                            {
+                                if (seatPosition.SeatPositionTypeName.Length > 3)
+                                {
+                                    @string.Concat(seatPosition.SeatPositionTypeName.Substring(0,3),".")
+                                }
+                                else
+                                {
+                                    @seatPosition.SeatPositionTypeName
+                                }
+
+                                @Html.Raw("&nbsp;");
+                                @seatPosition.DisplayValue<br />
+                            }
+                            Seat @ticketDetail.Seat.DisplayValue<br />
+                            @string.Format("{0:C}", ticketDetail.Price)<br />
+                            @if (ticketDetail.TicketStatusName == "UnSold")
+                            {
+                                <a class="btn btn-sm btn-light"
+                                    asp-area="" 
+                                    asp-controller="ShoppingCart" 
+                                    asp-action="AddToShoppingCart" 
+                                    asp-route-ticketId="@ticketDetail.Id">Buy</a>
+                            }                  
+                        </div>
+                    </div>      
+                </div>
+
+            </div>
+
+            prevSeatNumber = currSeatNumber;
+            seatCount++;
+
+            if (seatCount < Model.Tickets.Count())
+            {
+                ticketDetail = Model.Tickets.ElementAt(seatCount);
+                currSeatNumber = ticketDetail.Seat.OrdinalValue;
+            }
+            else
+            {
+                break;
+            }
+        }
+        </div>
+    </div>
+    <div class="row eh-row-spacer">&nbsp;</div>
+    prevSeatNumber = 0;
+}
+<br />
+<br />
+<div>
+    <a class="btn btn-sm btn-outline-dark"
+        asp-area="" 
+        asp-action="ReturnToOrigin">
+        Back
+    </a>
+</div>

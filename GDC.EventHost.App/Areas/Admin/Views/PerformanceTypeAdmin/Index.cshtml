@@ -1,0 +1,57 @@
+﻿@using GDC.EventHost.App.Areas.Admin.ViewModels
+@model PerformanceTypeListVM
+
+<h4>Performance Types</h4>
+<br />
+<table class="table">
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Description
+        </th>
+        <th></th>
+    </tr>
+    @foreach (var eventType in Model.PerformanceTypeList)
+    {
+        <tr>
+            <td>
+                @eventType.Name
+            </td>
+            <td>
+                @if (eventType.Description.Length > 50)
+                {
+                    @(eventType.Description.Substring(0, 50)+"...");
+                }
+                else
+                {
+                    @eventType.Description;
+                }
+            </td>
+            <td style="text-align:right">
+                <a asp-area="Admin"
+                   asp-controller="PerformanceTypeAdmin"
+                   asp-action="Edit"
+                   asp-route-id="@eventType.Id">Edit</a>
+                &nbsp;|&nbsp;
+                <a asp-area="Admin" 
+                   asp-controller="PerformanceTypeAdmin" 
+                   asp-action="Delete" 
+                   asp-route-id="@eventType.Id">Delete</a>
+            </td>
+        </tr>
+    }
+</table>
+<br />
+<div>
+    <a class="btn btn-sm btn-outline-dark"
+       asp-area="Admin" 
+       asp-controller="Home"
+       asp-action="Index">Back to Menu</a>
+    &nbsp;
+    <a class="btn btn-sm btn-outline-dark"
+       asp-area="Admin" 
+       asp-controller="PerformanceTypeAdmin" 
+       asp-action="Edit">Create Type</a>
+</div>

@@ -1,0 +1,11 @@
+﻿@model VenueDetailsViewModel
+<h4>
+    <a asp-area=""
+       asp-controller="Venues" 
+       asp-action="Detail" 
+       asp-route-id="@Model.Venue.Id">
+       @Model.Venue.Name</a>
+</h4>
+<div>
+    @Model.Venue.Description
+</div>

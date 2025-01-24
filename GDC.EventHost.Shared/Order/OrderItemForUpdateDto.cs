@@ -4,10 +4,10 @@ namespace GDC.EventHost.Shared.Order
 {
     public class OrderItemForUpdateDto
     {
-        public required Guid Id { get; set; }
+        public Guid Id { get; set; }
 
-        public required TicketDetailDto Ticket { get; set; }
+        public TicketDetailDto Ticket { get; set; }
 
-        public required Guid OrderId { get; set; }
+        public Guid OrderId { get; set; }
     }
 }

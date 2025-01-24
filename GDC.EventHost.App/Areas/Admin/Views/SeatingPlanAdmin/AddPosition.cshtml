@@ -1,0 +1,86 @@
+﻿@using GDC.EventHost.App.Areas.Admin.ViewModels
+@model SeatPositionEditVM
+
+<h4>Create Positions</h4>
+<br />
+
+@if (Model.Positions != null && Model.Positions.Count > 0)
+{
+    <div>
+        <table class="table">
+            <tr>
+                <th>
+                    Level
+                </th>
+                <th>
+                    Number
+                </th>
+                <th>
+                    Type
+                </th>
+            </tr>
+            @foreach (var position in Model.Positions)
+            {
+                <tr>
+                    <td>
+                        @position.Level
+                    </td>
+                    <td>
+                        @position.Number
+                    </td>
+                    <td>
+                        @position.SeatPositionType
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+    <br />
+}
+<form asp-action="AddPosition" enctype="multipart/form-data" method="post" class="form-horizontal" role="form">
+
+    <input asp-for="PerformanceId" type="hidden" />
+    <input asp-for="Level" type="hidden" />
+
+    <div class="form-group">
+        <label asp-for="SeatPositionTypeId" class="col-md-2 control-label"></label>
+        <div class="col-md-5">
+            <select asp-for="SeatPositionTypeId" class="form-control" 
+                    asp-items="Html.GetEnumSelectList<Enums.SeatPositionTypeEnum>()">
+                <option>-- Select One --</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Number" class="col-md-2 control-label"></label>
+        <div class="col-md-5">
+            <input asp-for="Number" class="form-control" />
+        </div>
+    </div>
+
+    <br />
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-5">
+
+
+            <input class="btn btn-sm btn-outline-dark"
+                   type="submit" value="Add" />&nbsp;
+
+            <a class="btn btn-sm btn-outline-dark"
+               asp-area="Admin" 
+                asp-controller="SeatingPlanAdmin" 
+                asp-action="ResetPositions"
+                asp-route-eventId="@Model.PerformanceId">Reset</a>
+        </div>
+    </div>
+
+</form>
+
+<br />
+<a class="btn btn-sm btn-outline-dark"
+   asp-area="Admin" 
+    asp-controller="SeatingPlanAdmin" 
+    asp-action="Add"
+    asp-route-eventId="@Model.PerformanceId">Done</a>

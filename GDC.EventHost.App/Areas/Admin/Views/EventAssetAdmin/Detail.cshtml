@@ -1,0 +1,52 @@
+﻿@using GDC.EventHost.App.Areas.Admin.ViewModels
+@model EventAssetDetailVM
+
+<h4>Event / @Model.EventTitle / Asset</h4>
+<br />
+
+<div>
+    <strong>Type:</strong>
+    @Model.EventAsset.AssetTypeValue
+</div>
+<br />
+<div>
+    <strong>Name:</strong>
+    @Model.EventAsset.Name
+</div>
+<br />
+<div>
+    <strong>Description:</strong>
+    @Model.EventAsset.Description
+</div>
+<br />
+<div>
+    <strong>Uri:</strong>
+    @Model.EventAsset.Uri
+</div>
+<br />
+<div>
+    <strong>Original Image:</strong>
+</div>
+<br />
+<div>
+    <img src="@Url.Content(Model.EventAsset.Uri)" alt="@Model.EventAsset.Name"/>
+</div>
+<br />
+
+<div>
+    @if (Model.ReturnUrl.Contains("Add"))
+    {
+        // we came from an edit page so redirect to list page
+        <a class="btn btn-sm btn-outline-dark"
+           asp-area="Admin"
+           asp-controller="EventAdmin"
+           asp-action="Detail"
+           asp-route-id="@Model.EventAsset.EventId">Back</a>
+    }
+    else
+    {
+        <a class="btn btn-sm btn-outline-dark"
+           href="@Model.ReturnUrl">Back</a>
+    }
+</div>
+

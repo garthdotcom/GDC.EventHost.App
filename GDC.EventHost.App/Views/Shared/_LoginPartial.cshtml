@@ -1,17 +1,68 @@
-@using System.Security.Principal
+﻿@using System.Security.Principal
+@using GDC.EventHost.App.Auth
+@using Microsoft.AspNetCore.Identity
+
+@* @inject SignInManager<EventHostUser> SignInManager
+@inject UserManager<EventHostUser> UserManager *@
 
 <ul class="navbar-nav">
-@if (User.Identity?.IsAuthenticated == true)
-{
-        <span class="navbar-text text-dark">Hello @User.Identity?.Name!</span>
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        var name = User.Claims.FirstOrDefault(c => c.Type == "name").Value;
+            
+        @* <span class="navbar-text text-dark">Hello @User.Identity?.Name!</span> *@
+        <span class="navbar-text text-dark">Hello @name!</span>
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut">Sign out</a>
+            <a class="nav-link text-dark" 
+                asp-controller="MyAccount" 
+                asp-action="LogOut">Sign out</a>
         </li>
-}
-else
-{
+        @* var memberId = UserManager.GetUserAsync(User).Result.MemberId; *@
+    }
+    else
+    {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignIn">Sign in</a>
+            <a class="nav-link text-dark" 
+                asp-controller="MyAccount" 
+                asp-action="SignIn">Sign in</a>
         </li>
-}
+    }
 </ul>
+
+
+
+@* <ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        var memberId = UserManager.GetUserAsync(User).Result.MemberId;
+
+        <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark btn btn-link" 
+            data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@UserManager.GetUserName(User)</a>
+        <div class="dropdown-menu">
+            <a class="dropdown-item"
+               asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">My Account</a>
+            <a class="dropdown-item"
+               asp-area="" asp-controller="Members" asp-action="OrderList" 
+               asp-route-id="@memberId">My Orders</a>
+            <a class="dropdown-item">
+                <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" 
+                    asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <input id="logout" value="Logout" type="submit" style="padding:0" class="nav-link btn btn-link text-dark" />
+            </form>
+            </a>
+        </div>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark btn btn-link" id="register" 
+               asp-area="Identity" asp-page="/Account/Register">Register</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark btn btn-link" id="login" 
+               asp-area="Identity" asp-page="/Account/Login">Login</a>
+        </li>
+    }
+</ul> *@

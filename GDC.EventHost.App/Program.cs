@@ -1,6 +1,10 @@
 using Azure.Identity;
 using GDC.EventHost.App;
 using GDC.EventHost.App.ApiServices;
+using GDC.EventHost.App.ApiServices;
+using GDC.EventHost.App.Components;
+using GDC.EventHost.App.Models;
+using GDC.EventHost.App.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -22,6 +26,8 @@ builder.Services.AddSingleton(sp =>
     var client = new HttpClient { BaseAddress = new Uri(builder.Configuration["ApiUri"]) };
     return client;
 });
+
+builder.Services.AddScoped<IEventHostService, EventHostService>();
 
 // //turn off the automatic claims mapping
 // test JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
@@ -75,6 +81,29 @@ builder.Services.AddAuthentication(o =>
         //};
     });
 
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("IsAdministrator", policy => policy.RequireRole("administrator"))
+    .AddPolicy("ManageUsers", policy => policy.RequireClaim("permission", "manageusers"))
+    .AddPolicy("SendEmail", policy => policy.RequireClaim("permission", "sendemail"));
+
+
+
+builder.Services.AddHttpClient<EventHostService>();
+
+builder.Services.AddScoped<ShoppingCart>(provider => ShoppingCart.GetCart(provider));
+
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddSession();
+
+//builder.Services.AddTransient<IEventAssetStorage, BlobStorageEventAsset>();
+builder.Services.AddTransient<IEventAssetStorage, FileSystemEventAsset>();
+
+builder.Services.AddTransient<IEmailSender, EmailSender>();
+
+
+
+
 if (builder.Environment.IsProduction())
 {
     builder.Configuration.AddAzureKeyVault(
@@ -103,6 +132,11 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapAreaControllerRoute(
+        name: "Admin",
+        areaName: "Admin",
+        pattern: "Admin/{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",

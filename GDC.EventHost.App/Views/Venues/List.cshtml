@@ -1,0 +1,17 @@
+﻿@model VenueListVM
+
+<div class="container">
+    <div class="row eh-bottom-border-solid">
+        <div class="col-xl eh-left-just">
+            <h3>Venues</h3>
+        </div>
+    </div>
+    <br />
+    <div class="card-columns">
+
+        @foreach (var venue in Model.VenueList)
+        {
+            <partial name="_VenueCard" model="venue" />
+        }
+    </div>
+</div>

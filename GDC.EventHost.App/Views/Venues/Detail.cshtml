@@ -1,0 +1,53 @@
+﻿@model VenueDetailVM
+
+<h4>@Model.Venue.Name</h4>
+<br />
+
+<div>
+    <div style="column-count:2">
+        <p>
+            @Model.Venue.LongDescription
+            <br />
+            <div>
+                <strong>Upcoming performances:</strong>
+            </div>
+
+            @if (Model.Venue.Performances.Count == 0)
+            {
+                var message = "No performances are currently scheduled for this venue.";
+                <div class="row eh-row-spacer">&nbsp;</div>
+                <div class="card-deck">   
+                    <partial name="_TextCard" model="message" />
+                </div>
+            }
+            <div style="break-inside:avoid">
+                @foreach (var performance in Model.Venue.Performances)
+                { 
+                    <div class="row eh-row-spacer">&nbsp;</div>
+                    <div class="card-deck"> 
+                        <partial name="_PerformanceDateCard" model="performance" />
+                    </div>
+                }
+            </div>
+        </p>
+        @await Component.InvokeAsync("GetImage", 
+        new { entityId = Model.Venue.Id, 
+              entityType = "Venue", 
+              assetType = Enums.AssetTypeEnum.MediumImage})
+    </div>
+</div>
+<br />
+<br />
+<div>
+    <a class="btn btn-sm btn-outline-dark" 
+       href="@Model.ReturnUrl">
+       Back
+    </a>
+    &nbsp;
+    <a class="btn btn-sm btn-outline-dark" 
+       asp-area=""
+       asp-controller="Events"
+       asp-action="List">
+       Event List
+    </a>
+</div>

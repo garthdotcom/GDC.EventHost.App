@@ -1,0 +1,64 @@
+﻿@model OrderPaymentVM
+
+<h4>Payment</h4>
+
+<br />
+<form asp-action="Payment" method="post" class="form-horizontal" role="form">
+
+    <div>
+        <strong>Please provide your credit card details:</strong>
+    </div>
+    <br />
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <input asp-for="@Model.OrderId" type="hidden" />
+
+    <div class="form-group">
+        <label asp-for="@Model.CreditCardNumber" class="col-md-2 control-label"></label>
+        <div class="col-md-5">
+            <input asp-for="@Model.CreditCardNumber" class="form-control" placeholder="9999-9999-9999-9999" />
+            <span asp-validation-for="@Model.CreditCardNumber" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.NameOnCard" class="col-md-2 control-label"></label>
+        <div class="col-md-5">
+            <input asp-for="@Model.NameOnCard" class="form-control" />
+            <span asp-validation-for="@Model.NameOnCard" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.CardExpiryMonthYear" class="col-md-2 control-label"></label>
+        <div class="col-md-5">
+            <input asp-for="@Model.CardExpiryMonthYear" class="form-control" placeholder="MM/YYYY" />
+            <span asp-validation-for="@Model.CardExpiryMonthYear" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.CardCV2" class="col-md-2 control-label"></label>
+        <div class="col-md-5">
+            <input asp-for="@Model.CardCV2" class="form-control" placeholder="999" />
+            <span asp-validation-for="@Model.CardCV2" class="text-danger"></span>
+        </div>
+    </div>
+
+    <br />
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-5">
+            <a class="btn btn-sm btn-outline-dark"
+               asp-area=""
+               asp-controller="Orders"
+               asp-action="CancelOrder"
+               asp-route-orderId="@Model.OrderId">Cancel</a>
+            &nbsp;
+            <input class="btn btn-sm btn-outline-dark"
+               type="submit" value="Pay Now" />
+        </div>
+    </div>
+
+</form>

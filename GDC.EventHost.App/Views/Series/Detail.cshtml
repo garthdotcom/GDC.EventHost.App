@@ -1,0 +1,61 @@
+﻿@model SeriesDetailVM
+
+<h4>@Model.Series.Title</h4>
+
+<div>
+    <span>
+    <time datetime="@Model.Series.StartDate?.ToString("dddd, dd MMMM yyyy")">
+        @Model.Series.StartDate?.ToString("dddd, dd MMMM yyyy")</time>
+    </span>
+
+    @if (@Model.Series.EndDate.HasValue)
+    {
+        <span>&nbsp;-&nbsp;
+            <time datetime="@Model.Series.EndDate.Value.ToString("dddd, dd MMMM yyyy")">
+                @Model.Series.EndDate.Value.ToString("dddd, dd MMMM yyyy")</time>
+        </span>
+    }
+</div>
+<br />
+
+<div>
+    @Model.Series.LongDescription
+</div>
+<br />
+
+<div>
+    <strong>Events in this series:</strong>
+</div>
+<br />
+
+@if (Model.Series.Events.Count == 0)
+{
+    var message = "No events have been added yet.";
+    <div class="row eh-row-spacer">&nbsp;</div>
+    <div class="card-deck">   
+        <partial name="_TextCard" model="message" />
+    </div>
+}
+
+@foreach (var eventItem in Model.Series.Events)
+{ 
+    <div class="row eh-row-spacer">&nbsp;</div>
+    <div class="card-deck"> 
+        <partial name="_EventCardSmall" model="eventItem" />
+    </div>
+}
+
+<br />
+<div>
+    <a class="btn btn-sm btn-outline-dark" 
+       href="@Model.ReturnUrl">
+       Back
+    </a>
+    &nbsp;
+    <a class="btn btn-sm btn-outline-dark" 
+        asp-area=""
+        asp-controller="Events"
+        asp-action="List">
+        Event List
+    </a>
+</div>

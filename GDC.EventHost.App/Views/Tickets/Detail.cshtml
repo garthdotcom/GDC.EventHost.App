@@ -1,0 +1,71 @@
+﻿@model TicketDetailVM
+
+<h4>Ticket / @Model.Ticket.PerformanceTitle</h4>
+<br />
+<div>
+    <span><strong>Date:</strong></span>
+    <span>
+    <time datetime="@Model.Ticket.PerformanceDate.ToString("dddd, dd MMMM yyyy HH:mm")">
+        @Model.Ticket.PerformanceDate.ToString("dddd, dd MMMM yyyy HH:mm")</time>
+    </span>
+</div>
+<br />
+<div>
+    <span><strong>Venue:</strong></span>
+    <span>
+        @Model.Ticket.VenueName
+    </span>
+</div>
+<br />
+<div>
+    <span><strong>Number:</strong></span>
+    <span>
+        @Model.Ticket.Number
+    </span>
+</div>
+<br />
+<div>
+    <span><strong>Price:</strong></span>
+    <span>
+        @string.Format("{0:C}", Model.Ticket.Price)
+    </span>
+</div>
+<br />
+<div>
+    <span><strong>Status:</strong></span>
+    <span>
+        @Model.Ticket.TicketStatusName
+    </span>
+</div>
+<br />
+<table>
+    @foreach (var seatPosition in Model.Ticket.Seat.SeatPositions)
+    {
+        <tr>
+            <td><h5>@seatPosition.SeatPositionTypeName</h5></td>
+            <td><h5>@seatPosition.DisplayValue</h5></td>
+        </tr>
+    }
+    <tr>
+        <td><h5>Seat</h5></td>
+        <td><h5>@Model.Ticket.Seat.DisplayValue</h5></td>
+    </tr>
+</table>
+<br />
+
+<div>
+    <a class="btn btn-sm btn-outline-dark"
+        asp-area="" 
+        asp-controller="Tickets" 
+        asp-action="List" 
+        asp-route-eventId="@Model.Ticket.PerformanceId">Back</a>
+</div>
+
+<form asp-action="Buy" enctype="multipart/form-data" method="post" class="form-horizontal" role="form">
+
+    <input asp-for="@Model.Ticket.Id" type="hidden" />
+    <input asp-for="@Model.Ticket.PerformanceId" type="hidden" />
+
+    <input class="btn btn-sm btn-outline-dark" type="submit" value="Buy" />
+
+</form>

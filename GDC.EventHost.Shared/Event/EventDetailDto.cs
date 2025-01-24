@@ -1,4 +1,5 @@
-﻿using GDC.EventHost.Shared.Performance;
+﻿using GDC.EventHost.Shared.EventAsset;
+using GDC.EventHost.Shared.Performance;
 using System.ComponentModel.DataAnnotations;
 using static GDC.EventHost.Shared.Enums;
 
@@ -36,6 +37,6 @@ namespace GDC.EventHost.Shared.Event
 
         public List<PerformanceDetailDto> Performances { get; set; } = [];
 
-        //public List<EventAssetDto> EventAssets { get; set; } = [];
+        public List<EventAssetDto> EventAssets { get; set; } = [];
     }
 }

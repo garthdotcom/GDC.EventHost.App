@@ -1,0 +1,74 @@
+﻿@using GDC.EventHost.App.Areas.Admin.ViewModels
+@model SeriesEditVM
+
+@if (string.IsNullOrEmpty(Model.Series.Title))
+{
+    <h4>Create Series</h4>
+}
+else
+{
+    <h4>Edit Series / @Model.Series.Title</h4>
+}
+<br />
+<form asp-action="Edit" method="post" class="form-horizontal" role="form">
+
+    <div>
+        <strong>Please provide details for this series:</strong>
+    </div>
+    <br />
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <input asp-for="Series.Id" type="hidden" />
+
+    <div class="form-group">
+        <label asp-for="Series.Title" class="col-md-2 control-label"></label>
+        <div class="col-md-5">
+            <input asp-for="Series.Title" class="form-control" />
+            <span asp-validation-for="Series.Title" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Series.Description" class="col-md-2 control-label"></label>
+        <div class="col-md-5">
+            <input asp-for="Series.Description" class="form-control" />
+            <span asp-validation-for="Series.Description" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Series.LongDescription" class="col-md-2 control-label"></label>
+        <div class="col-md-5">
+            <input asp-for="Series.LongDescription" class="form-control" />
+            <span asp-validation-for="Series.LongDescription" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Series.StartDate" class="col-md-2 control-label"></label>
+        <div class="col-md-5">
+            <input asp-for="Series.StartDate" class="form-control" />
+            <span asp-validation-for="Series.StartDate" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Series.EndDate" class="col-md-2 control-label"></label>
+        <div class="col-md-5">
+            <input asp-for="Series.EndDate" class="form-control" />
+            <span asp-validation-for="Series.EndDate" class="text-danger"></span>
+        </div>
+    </div>
+
+    <br />
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-5">
+            <a class="btn btn-sm btn-outline-dark"
+               href="javascript:history.go(-1)">Cancel</a>&nbsp;
+            <input class="btn btn-sm btn-outline-dark"
+                   type="submit" value="Save" />
+        </div>
+    </div>
+
+</form>

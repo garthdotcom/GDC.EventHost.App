@@ -1,0 +1,134 @@
+﻿@using GDC.EventHost.App.Areas.Admin.ViewModels
+@model OrderListVM
+
+<form method="get">
+    <div class="form-group">
+        <div class="input-group">
+            <input type="search" 
+                   class="form-control" 
+                   placeholder="Enter value to search..." 
+                   asp-for="SearchQuery"
+                   value="@ViewData["CurrentFilter"]"/>
+            <span class="input-group-btn">
+                <button class="btn btn-default">
+                    <i class="fas fa-search"></i>
+                </button>
+            </span>
+        </div>
+    </div>
+</form>
+<h4>Orders</h4>
+<br />
+@if (Model.OrderListItems.ToList().Count == 0)
+{
+    <div>
+        <span>Sorry, your search did not return any results. Please try again.</span>
+    </div>
+}
+else
+{
+<table class="table">
+    <tr>
+        <th style="width:400px">
+            <a asp-action="Index" 
+                asp-route-sortOrder="@ViewData["UserNameSortParm"]"
+                asp-route-searchQuery="@ViewData["CurrentFilter"]">
+                Member Name
+                <i class="fas fa-sort"></i>
+            </a>
+        </th>
+        <th style="width:200px">
+            <a asp-action="Index" 
+                asp-route-sortOrder="@ViewData["OrderDateSortParm"]"
+                asp-route-searchQuery="@ViewData["CurrentFilter"]">
+                Date
+                <i class="fas fa-sort"></i>
+            </a>
+        </th>
+        <th style="width:150px">
+            <a asp-action="Index" 
+                asp-route-sortOrder="@ViewData["OrderStatusSortParm"]"
+                asp-route-searchQuery="@ViewData["CurrentFilter"]">
+                Status
+                <i class="fas fa-sort"></i>
+            </a>
+        </th>
+        <th>
+            Total
+        </th>
+        <th></th>
+    </tr>
+    @foreach (var orderListItem in Model.OrderListItems)
+    {
+        <tr>
+            <td>
+                @orderListItem.MemberFullName (@orderListItem.MemberUserName)
+            </td>
+            <td>
+                <span>
+                    <time datetime="@orderListItem.Order.Date.ToString("dd MMMM yyyy HH:mm")">
+                        @orderListItem.Order.Date.ToString("dd MMMM yyyy HH:mm")
+                    </time>
+                </span>
+            </td>
+            <td>
+                @orderListItem.Order.OrderStatusValue
+            </td>
+            <td>
+                @orderListItem.Order.OrderItems.Select(o => o.Ticket.Price).Sum().ToString("c") 
+            </td>
+            <td style="text-align:right">
+                <a asp-area="Admin" 
+                   asp-controller="OrderAdmin" 
+                   asp-action="Detail" 
+                   asp-route-id="@orderListItem.Order.Id">View</a>
+                &nbsp;|&nbsp;
+                <a asp-area="Admin"
+                   asp-controller="OrderAdmin"
+                   asp-action="Edit"
+                   asp-route-id="@orderListItem.Order.Id">Edit</a>
+                &nbsp;|&nbsp;          
+                <a asp-area="Admin" 
+                   asp-controller="OrderAdmin" 
+                   asp-action="Delete" 
+                   asp-route-id="@orderListItem.Order.Id">Delete</a>
+            </td>
+        </tr>
+    }
+    <tr>
+        <td colspan="5" style="text-align:center">
+            @{
+                var prevDisabled = !Model.OrderListItems.HasPreviousPage ? "disabled" : "";
+                var nextDisabled = !Model.OrderListItems.HasNextPage ? "disabled" : "";
+            }
+
+            <a asp-action="Index"
+                asp-route-sortOrder="@ViewData["CurrentSort"]"
+                asp-route-pageNumber="@(Model.OrderListItems.PageIndex - 1)"
+                asp-route-searchQuery="@ViewData["CurrentFilter"]"
+                class="btn btn-sm btn-link text-dark @prevDisabled">
+                @Html.Raw("<")
+            </a>
+
+            <span class="btn btn-sm text-dark">
+                @(Model.OrderListItems.PageIndex) of @(Model.OrderListItems.TotalPages)
+            </span>
+
+            <a asp-action="Index"
+                asp-route-sortOrder="@ViewData["CurrentSort"]"
+                asp-route-pageNumber="@(Model.OrderListItems.PageIndex + 1)"
+                asp-route-searchQuery="@ViewData["CurrentFilter"]"
+                class="btn btn-sm btn-link text-dark @nextDisabled">
+                @Html.Raw(">")
+            </a>
+        </td>
+    </tr>
+</table>
+}
+<br />
+<div>
+    <a class="btn btn-sm btn-outline-dark"
+       asp-area="Admin" 
+       asp-controller="Home"
+       asp-action="Index">Back to Menu</a>
+</div>

@@ -1,0 +1,52 @@
+﻿@using GDC.EventHost.App.Areas.Admin.ViewModels
+@model PerformanceTypeEditVM
+
+
+@if (string.IsNullOrEmpty(Model.PerformanceType.Name))
+{
+    <h4>Create Performance Type</h4>
+}
+else
+{
+    <h4>Edit Event Type / @Model.PerformanceType.Name</h4>
+}
+<br />
+
+<form asp-action="Edit" method="post" class="form-horizontal" role="form">
+
+    <div>
+        <strong>Please provide details for this performance type:</strong>
+    </div>
+    <br />
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <input asp-for="PerformanceType.Id" type="hidden" />
+
+    <div class="form-group">
+        <label asp-for="PerformanceType.Name" class="col-md-2 control-label"></label>
+        <div class="col-md-5">
+            <input asp-for="PerformanceType.Name" class="form-control" />
+            <span asp-validation-for="PerformanceType.Name" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PerformanceType.Description" class="col-md-2 control-label"></label>
+        <div class="col-md-5">
+            <input asp-for="PerformanceType.Description" class="form-control" />
+            <span asp-validation-for="PerformanceType.Description" class="text-danger"></span>
+        </div>
+    </div>
+
+    <br />
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-5">
+            <a class="btn btn-sm btn-outline-dark"
+               href="javascript:history.go(-1)">Cancel</a>&nbsp;
+            <input class="btn btn-sm btn-outline-dark"
+                   type="submit" value="Save" />
+        </div>
+    </div>
+
+</form>

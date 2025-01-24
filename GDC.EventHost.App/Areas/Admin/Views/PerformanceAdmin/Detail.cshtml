@@ -1,0 +1,136 @@
+﻿@using GDC.EventHost.App.Areas.Admin.ViewModels
+@model PerformanceDetailVM
+
+<h4>Performance Date / @Model.PerformanceDetail.EventTitle</h4>
+<br />
+<div>
+    <span><strong>Date:</strong></span>
+    <span>
+    <time datetime="@Model.PerformanceDetail.Date.ToString("dddd, dd MMMM yyyy HH:mm")">
+        @Model.PerformanceDetail.Date.ToString("dddd, dd MMMM yyyy HH:mm")</time>
+    </span>
+</div>
+<br />
+<div>
+    <span><strong>Venue:</strong></span>
+    <span>
+        @Model.PerformanceDetail.VenueName
+    </span>
+</div>
+<br />
+
+@if (Model.PerformanceDetail.SeatingPlanId == null)
+{
+    <div>
+        <a class="btn btn-sm btn-outline-dark"
+           asp-area="Admin"
+           asp-action="AddSeatingPlanToPerformance"
+           asp-route-id="@Model.PerformanceDetail.Id">Select SeatingPlan</a>
+    </div>
+}
+else
+{
+    <div>
+        <span><strong>SeatingPlan:</strong></span>
+        <span>
+            @Model.PerformanceDetail.SeatingPlanName
+        </span>
+    </div>
+    <br />
+
+    @if (Model.PerformanceDetail.TicketCount.TotalTickets == 0 )
+    {
+        <div>
+            <a class="btn btn-sm btn-outline-dark"
+               asp-area="Admin"
+               asp-action="CreateTickets"
+               asp-route-id="@Model.PerformanceDetail.Id">Create Tickets</a>
+        </div>
+    }
+    else
+    {
+        <div>
+            <a class="btn btn-sm btn-outline-dark"
+                asp-area="Admin"
+                asp-action="DisplayTickets"
+                asp-route-id="@Model.PerformanceDetail.Id">View Tickets</a>
+        </div>  
+    }
+
+}
+<br />
+
+@if (Model.PerformanceDetail.PerformanceAssets.Count > 0)
+{
+    <div>
+        <table class="table">
+            <tr>
+                <th>
+                    Asset Name
+                </th>
+                <th>
+                    Type
+                </th>
+                <th></th>
+            </tr>
+            @foreach (var eventAsset in Model.PerformanceDetail.PerformanceAssets)
+            {
+                <tr>
+                    <td>
+                        @eventAsset.Name
+                    </td>
+                    <td>
+                        @eventAsset.AssetTypeValue
+                    </td>
+                    <td>
+                        <a asp-area="Admin" 
+                           asp-controller="PerformanceAssetAdmin" 
+                           asp-action="Detail" 
+                           asp-route-id="@eventAsset.Id">View</a>
+                        &nbsp;|&nbsp;
+                        <a asp-area="Admin" 
+                           asp-controller="PerformanceAssetAdmin" 
+                           asp-action="Delete" 
+                           asp-route-id="@eventAsset.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+    <br />
+}
+
+<div>
+    <a class="btn btn-sm btn-outline-dark"
+       asp-area="Admin" 
+       asp-controller="PerformanceAssetAdmin" 
+       asp-action="Add" 
+       asp-route-eventId="@Model.PerformanceDetail.Id">Add Asset</a>
+</div>
+
+<br />
+
+<div>
+    @if (Model.ReturnUrl.Contains("Edit") || Model.ReturnUrl.Contains("Add"))
+    {
+        <a class="btn btn-sm btn-outline-dark"
+           asp-area="Admin" 
+           asp-controller="EventAdmin"
+           asp-action="Detail" 
+           asp-route-id="@Model.PerformanceDetail.EventId">Back</a>
+
+    }
+    else
+    {
+        <a class="btn btn-sm btn-outline-dark"
+           href="@Model.ReturnUrl">Back</a>
+    }
+
+    &nbsp;
+
+    <a class="btn btn-sm btn-outline-dark"
+       asp-area="Admin"
+       asp-action="Edit"
+       asp-route-id="@Model.PerformanceDetail.Id"
+       asp-route-eventId="@Model.PerformanceDetail.EventId">Edit</a>
+</div>

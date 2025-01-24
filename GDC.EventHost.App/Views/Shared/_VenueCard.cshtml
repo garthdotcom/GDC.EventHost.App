@@ -1,0 +1,54 @@
+﻿@model VenueDetailDto
+
+<div class="card">
+    <a asp-area=""
+       asp-controller="Venues" 
+       asp-action="Detail" 
+       asp-route-id="@Model.Id">
+       @await Component.InvokeAsync("GetImage", 
+           new { entityId = @Model.Id, 
+                 entityType = "Venue", 
+                 assetType = Enums.AssetTypeEnum.LargeImage,
+                 height = 100 })</a>
+
+    <div class="card-body">
+
+        <h5 class="card-title">
+            <a asp-area=""
+                asp-controller="Venues" 
+                asp-action="Detail" 
+                asp-route-id="@Model.Id">
+                @Model.Name</a>
+        </h5>
+
+        <div class="card-text">
+
+            @Model.Description
+
+            <div class="row eh-row-spacer">&nbsp;</div>
+
+            <strong>Upcoming performances:</strong>
+
+            @if (Model.Performances.Count == 0)
+            {
+                <div class="row eh-row-spacer">&nbsp;</div>
+                <div class="card">
+                    <div class="row no-gutters"> 
+                        <div class="col-md">
+                            <div class="card-body">
+                                There are no performances currently scheduled for this venue, 
+                                but please check back again soon.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @foreach (var performance in Model.Performances)
+            {
+                <div class="row eh-row-spacer">&nbsp;</div>
+                <partial name="_PerformanceDateCard" model="performance" />
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,52 @@
+﻿@using GDC.EventHost.App.Areas.Admin.ViewModels.PerformanceAsset
+@model PerformanceAssetDetailVM
+
+<h4>Performance / @Model.PerformanceName / Asset</h4>
+<br />
+
+<div>
+    <strong>Type:</strong>
+    @Model.PerformanceAsset.AssetTypeValue
+</div>
+<br />
+<div>
+    <strong>Name:</strong>
+    @Model.PerformanceAsset.Name
+</div>
+<br />
+<div>
+    <strong>Description:</strong>
+    @Model.PerformanceAsset.Description
+</div>
+<br />
+<div>
+    <strong>Uri:</strong>
+    @Model.PerformanceAsset.Uri
+</div>
+<br />
+<div>
+    <strong>Original Image:</strong>
+</div>
+<br />
+<div>
+    <img src="@Url.Content(Model.PerformanceAsset.Uri)" alt="@Model.PerformanceAsset.Name"/>
+</div>
+<br />
+
+<div>
+    @if (Model.ReturnUrl.Contains("Add"))
+    {
+        // we came from an edit page so redirect to list page
+        <a class="btn btn-sm btn-outline-dark"
+           asp-area="Admin"
+           asp-controller="PerformanceAdmin"
+           asp-action="Detail"
+           asp-route-id="@Model.PerformanceAsset.PerformanceId">Back</a>
+    }
+    else
+    {
+        <a class="btn btn-sm btn-outline-dark"
+           href="@Model.ReturnUrl">Back</a>
+    }
+</div>
+

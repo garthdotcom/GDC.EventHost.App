@@ -1,0 +1,88 @@
+﻿@using GDC.EventHost.App.Areas.Admin.ViewModels
+@model OrderEditVM
+
+<h4>Order / @Model.Order.Id.ToString()</h4>
+<br />
+<div>
+    <strong>Date:</strong>
+    <span>
+        <time datetime="@Model.Order.Date.ToString("dd MMMM yyyy HH:mm")">
+            @Model.Order.Date.ToString("dd MMMM yyyy HH:mm")
+        </time>
+    </span>
+</div>
+<br />
+@if (Model.Order.OrderItems.Count > 0)
+{
+    <div>
+        <table class="table">
+            <tr>
+                <th>
+                    Ticket
+                </th>
+                <th>
+                    Price
+                </th>
+                <th></th>
+            </tr>
+            @foreach (var orderItem in Model.Order.OrderItems)
+            {
+                var stringBuilder = new System.Text.StringBuilder();
+
+                stringBuilder.Append($"{orderItem.Ticket.PerformanceTitle}, ");
+                stringBuilder.Append($"{orderItem.Ticket.PerformanceDate.ToString("dd MMMM yyyy HH:mm")}, ");
+                stringBuilder.Append($"{orderItem.Ticket.VenueName} - ");
+
+                @foreach (var seatPosition in orderItem.Ticket.Seat.SeatPositions)
+                {
+                    stringBuilder.Append($"{seatPosition.SeatPositionTypeName} {seatPosition.DisplayValue}, ");
+                }
+
+                stringBuilder.Append($" Seat {orderItem.Ticket.Seat.DisplayValue}");
+
+                <tr>
+                    <td class="text-left">@stringBuilder.ToString()</td>
+                    <td class="text-right">@orderItem.Ticket.Price.ToString("c")</td>
+                </tr>
+            }
+            <tr>
+                <td class="text-right">Total:</td>
+                <td class="text-right">
+                    @Model.OrderTotal.ToString("c") 
+                </td>
+            </tr>
+        </table>
+    </div>
+    <br />
+}
+else
+{
+    <div>
+        <span>There are no items in this order. Please contact support.</span>
+    </div>
+}
+<br />
+<form asp-action="Edit" method="post" class="form-horizontal" role="form">
+    <div class="form-group">
+        <label asp-for="@Model.Order.OrderStatusId" class="col-md-2 control-label"></label>
+        <div class="col-md-5">
+            <select asp-for="@Model.Order.OrderStatusId" class="form-control" 
+                    asp-items="Html.GetEnumSelectList<Enums.OrderStatusEnum>()">
+                <option>-- Select One --</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-5">
+            <a class="btn btn-sm btn-outline-dark"
+               href="javascript:history.go(-1)">Cancel</a>&nbsp;
+            <input class="btn brn-sm btn-outline-dark"
+                   type="submit" value="Save" />
+        </div>
+    </div>
+
+</form>
+
+
+

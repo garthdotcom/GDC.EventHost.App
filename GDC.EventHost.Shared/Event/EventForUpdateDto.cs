@@ -6,6 +6,8 @@ namespace GDC.EventHost.Shared.Event
 {
     public class EventForUpdateDto
     {
+        public Guid Id { get; set; }
+
         [Display(Name = "Title")]
         [Required(ErrorMessage = "You should enter a title.")]
         [MaxLength(150, ErrorMessage = "The title should not be longer than 150 characters.")]

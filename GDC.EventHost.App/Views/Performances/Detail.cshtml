@@ -1,0 +1,23 @@
+﻿@model PerformanceDetailVM
+
+@await Component.InvokeAsync("EventDetails", new { eventId = Model.PerformanceDetail.EventId })
+
+@await Component.InvokeAsync("VenueDetails", new { venueId = Model.PerformanceDetail.VenueId })
+
+<br />
+    <partial name="_PerformanceDateCardNoTitle" model="Model.PerformanceDetail" />
+<br />
+<br />
+<div>
+    <a class="btn btn-sm btn-outline-dark" 
+       href="@Model.ReturnUrl">
+       Back</a>
+    &nbsp;
+    <a class="btn btn-sm btn-outline-dark" 
+       asp-area=""
+       asp-controller="Events"
+       asp-action="Detail"
+       asp-route-id="@Model.PerformanceDetail.EventId">
+       Event Home
+    </a>
+</div>

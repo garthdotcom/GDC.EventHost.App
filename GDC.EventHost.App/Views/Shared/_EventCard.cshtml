@@ -1,0 +1,62 @@
+﻿@model EventDetailDto
+
+<div class="card">
+    <div class="card-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-3">
+                    <a asp-controller="Events" 
+                            asp-action="Detail" 
+                            asp-route-id="@Model.Id">                   
+                            @await Component.InvokeAsync("GetImage",
+                            new
+                            {
+                                entityId = Model.Id,
+                                entityType = "Event",
+                                assetType = Enums.AssetTypeEnum.SmallImage
+                            })
+                    </a>
+                </div>
+                <div class="col-9">
+                    <h5>
+                        <a asp-controller="Events" 
+                            asp-action="Detail" 
+                            asp-route-id="@Model.Id">
+                            @Model.Title</a>
+                    </h5>
+                    <strong>
+                    <a asp-controller="Series"
+                        asp-action="Detail" 
+                        asp-route-id="@Model.SeriesId">@Model.SeriesTitle</a>
+                    </strong>
+                    <br />
+                    <div class="card-text">
+                        
+                        @Model.Description
+
+                        @if (Model.Performances.Count == 0)
+                        {
+                            <div class="row eh-row-spacer">&nbsp;</div>
+
+                            <div class="card">
+                                <div class="row no-gutters"> 
+                                    <div class="col-md">
+                                        <div class="card-body">
+                                            Performance dates have yet to be announced. Please check back again soon.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        @foreach (var performance in Model.Performances)
+                        {
+                            <div class="row eh-row-spacer">&nbsp;</div>
+                            <partial name="_PerformanceDateCardNoTitle" model="performance" />
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

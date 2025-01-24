@@ -1,0 +1,39 @@
+﻿@using GDC.EventHost.App.Areas.Admin.ViewModels
+@model SeatDisplayVM
+
+<h4>Seat - @Model.SeatDetail.DisplayValue</h4>
+<br />
+<div>
+    <strong>Location:</strong>
+
+    @foreach (var seatPosition in Model.SeatDetail.SeatPositions)
+    {
+        <div>@seatPosition.SeatPositionTypeName&nbsp;@seatPosition.DisplayValue</div>
+    }
+</div>
+<br />
+<div>
+    <strong>Venue:</strong>
+    @Model.SeatDetail.VenueName
+</div>
+<br />
+<div>
+    <strong>Type:</strong>
+    @Model.SeatDetail.SeatTypeName
+</div>
+<br />
+@* TODO: add the list of tickets related to this seat *@
+<div>
+    <a class="btn btn-sm btn-outline-dark"
+        asp-area="Admin"
+        asp-controller="SeatingPlanAdmin"
+        asp-action="Detail" 
+        asp-route-id="@Model.SeatDetail.SeatingPlanId">Back</a>
+    &nbsp;
+    <a class="btn btn-sm btn-outline-dark"
+       asp-area="Admin"
+       asp-controller="SeatAdmin"
+       asp-action="Edit" 
+       asp-route-id="@Model.SeatDetail.Id">Edit</a>
+</div>
+

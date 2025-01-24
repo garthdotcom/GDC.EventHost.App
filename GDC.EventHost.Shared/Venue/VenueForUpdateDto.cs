@@ -6,6 +6,8 @@ namespace GDC.EventHost.Shared.Venue
 {
     public class VenueForUpdateDto
     {
+        public Guid Id { get; set; }
+
         [Display(Name = "Name")]
         [Required(ErrorMessage = "You should enter a name.")]
         [MaxLength(150, ErrorMessage = "The name should not be longer than 150 characters.")]

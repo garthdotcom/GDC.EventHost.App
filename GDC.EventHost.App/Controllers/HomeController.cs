@@ -1,34 +1,18 @@
-using GDC.EventHost.App.Models;
+﻿using GDC.EventHost.App;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-using Microsoft.AspNetCore.Authorization;
 
 namespace GDC.EventHost.App.Controllers
 {
+    [ServiceFilter(typeof(EnsureAccessTokenFilter))]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        public ActionResult Index()
         {
-            _logger = logger;
-        }
+            var test = User.Identity;
+            var claims = User.Claims;
+            var asfd = User.IsInRole("Administrator");
 
-        public IActionResult Index()
-        {
             return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [AllowAnonymous]
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

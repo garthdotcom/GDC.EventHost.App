@@ -1,0 +1,125 @@
+﻿@model EditUserVM
+
+@using GDC.EventHost.App.Auth
+@using GDC.EventHost.App.Areas.Admin.ViewModels.User
+@using Microsoft.AspNetCore.Identity
+
+@inject UserManager<EventHostUser> UserManager 
+
+
+<h4>Edit User</h4>
+
+<form asp-controller="UserAdmin" asp-action="EditUser" method="post" class="form-horizontal" role="form">
+    <hr />
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="Id" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Id" class="form-control" readonly="readonly" />
+            <span asp-validation-for="Id" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="UserName" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="UserName" class="form-control" />
+            <span asp-validation-for="UserName" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Email" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="FullName" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="FullName" class="form-control" />
+            <span asp-validation-for="FullName" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="BirthDate" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="BirthDate" class="form-control" />
+            <span asp-validation-for="BirthDate" class="text-danger"></span>
+        </div>
+    </div>
+
+    <input asp-for="MemberId" type="hidden" />
+
+    <br />
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-sm btn-outline-dark" value="Save" /> 
+            <a asp-action="UserManagement" class="btn btn-sm btn-outline-dark">Cancel</a>                   
+        </div>
+    </div>
+</form>
+<br />
+<div class="card-deck">
+    <div class="card">
+        <div class="card-body">
+            <h6>Claims for this User</h6>
+                @if (Model.UserClaims.Count == 0)
+                {
+                    <div class="form-group">
+                        No claims yet
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group">
+                        @foreach (var claim in Model.UserClaims)
+                        {
+                            @claim
+                        }
+                    </div>
+                }
+            <br />
+            <div>
+                <a asp-action="ManageClaimsForUser" 
+                    asp-route-userId="@Model.Id" 
+                    class="btn btn-sm btn-outline-dark">Manage Claims</a>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <h6>Roles for this User</h6>
+                @{ 
+                    var user = await UserManager.FindByIdAsync(Model.Id);
+                    var userRoles = await UserManager.GetRolesAsync(user); 
+                }
+                @if (userRoles.Count == 0)
+                {
+                    <div class="form-group">
+                        No roles yet
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group">
+                        @foreach (var role in userRoles)
+                        {
+                            @role
+                        }
+                    </div>
+                }
+            <br />
+            <div class="col-md-offset-2 col-md-10">
+                <a asp-action="ManageRolesForUser" 
+                    asp-route-userId="@Model.Id" 
+                    class="btn btn-sm btn-outline-dark">Manage Roles</a>
+            </div>
+        </div>
+    </div>
+</div>

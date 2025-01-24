@@ -1,0 +1,146 @@
+﻿@using GDC.EventHost.App.Areas.Admin.ViewModels
+@model AssetListVM
+
+<form method="get">
+    <div class="form-group">
+        <div class="input-group">
+            <input type="search" 
+                   class="form-control" 
+                   placeholder="Enter value to search..." 
+                   asp-for="SearchQuery"
+                   value="@ViewData["CurrentFilter"]"/>
+            <span class="input-group-btn">
+                <button class="btn btn-default">
+                    <i class="fas fa-search"></i>
+                </button>
+            </span>
+        </div>
+    </div>
+</form>
+<h4>Assets</h4>
+<br />
+@if (Model.AssetList.Count == 0)
+{
+    <div>
+        <span>Sorry, your search did not return any results. Please try again.</span>
+    </div>
+}
+else
+{
+<table class="table">
+    <tr>
+        <th style="width:300px">
+            <a asp-action="Index" 
+                asp-route-sortOrder="@ViewData["AssetNameSortParm"]"
+                asp-route-searchQuery="@ViewData["CurrentFilter"]">
+                Name
+                <i class="fas fa-sort"></i>
+            </a>
+        </th>
+        <th>
+            <a asp-action="Index" 
+                asp-route-sortOrder="@ViewData["DescriptionSortParm"]"
+                asp-route-searchQuery="@ViewData["CurrentFilter"]">
+                Description
+                <i class="fas fa-sort"></i>
+            </a>
+        </th>
+        <th>
+            <a asp-action="Index" 
+                asp-route-sortOrder="@ViewData["FileNameSortParm"]"
+                asp-route-searchQuery="@ViewData["CurrentFilter"]">
+                File Name
+                <i class="fas fa-sort"></i>
+            </a>
+        </th>
+        <th></th>
+    </tr>
+    
+    @foreach (var asset in Model.AssetList)
+    {
+        <tr>
+            <td>
+                @asset.Name
+            </td>
+            <td>
+                @if (asset.Description.Length > 40)
+                {
+                    @(asset.Description.Substring(0, 40)+"...");
+                }
+                else
+                {
+                    @asset.Description;
+                }
+            </td>
+            <td>
+                @{ 
+                    var lastSlashPosn = asset.Uri.LastIndexOf('/');
+
+                    var fileName = asset.Uri.Substring(lastSlashPosn + 1);
+
+                    if (fileName.Length > 15)
+                    {
+                        @(fileName.Substring(0, 15) + "...");
+                    }
+                    else
+                    {
+                        @fileName
+                    }
+                }
+            </td>
+            <td style="text-align:right">
+                <a asp-area="Admin" 
+                   asp-action="Detail" 
+                   asp-route-id="@asset.Id">View</a>
+                &nbsp;|&nbsp;
+                <a asp-area="Admin" 
+                   asp-action="Edit" 
+                   asp-route-id="@asset.Id">Edit</a>
+                &nbsp;|&nbsp;
+                <a asp-area="Admin" 
+                   asp-action="Delete" 
+                   asp-route-id="@asset.Id">Delete</a>
+            </td>
+        </tr>
+    }
+    <tr>
+        <td colspan="4" style="text-align:center">
+            @{
+                var prevDisabled = !Model.AssetList.HasPreviousPage ? "disabled" : "";
+                var nextDisabled = !Model.AssetList.HasNextPage ? "disabled" : "";
+            }
+
+            <a asp-action="Index"
+                asp-route-sortOrder="@ViewData["CurrentSort"]"
+                asp-route-pageNumber="@(Model.AssetList.PageIndex - 1)"
+                asp-route-searchQuery="@ViewData["CurrentFilter"]"
+                class="btn btn-sm btn-link text-dark @prevDisabled">
+                @Html.Raw("<")
+            </a>
+
+            <span class="btn btn-sm text-dark">
+                @(Model.AssetList.PageIndex) of @(Model.AssetList.TotalPages)
+            </span>
+
+            <a asp-action="Index"
+                asp-route-sortOrder="@ViewData["CurrentSort"]"
+                asp-route-pageNumber="@(Model.AssetList.PageIndex + 1)"
+                asp-route-searchQuery="@ViewData["CurrentFilter"]"
+                class="btn btn-sm btn-link text-dark @nextDisabled">
+                @Html.Raw(">")
+            </a>
+        </td>
+    </tr>
+</table>
+}
+<br />
+<div>
+    <a class="btn btn-sm btn-outline-dark"
+       asp-area="Admin" 
+       asp-controller="Home"
+       asp-action="Index">Back to Menu</a>
+    &nbsp;
+    <a class="btn btn-sm btn-outline-dark"
+       asp-area="Admin" 
+       asp-action="Edit">Create Asset</a>
+</div>

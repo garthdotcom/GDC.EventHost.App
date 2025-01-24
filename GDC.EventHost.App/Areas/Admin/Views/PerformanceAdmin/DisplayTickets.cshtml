@@ -1,0 +1,98 @@
+﻿@using GDC.EventHost.App.Areas.Admin.ViewModels
+@model PerformanceTicketListVM
+
+<h4>Tickets / @Model.PerformanceTitle</h4>
+<br />
+<div>
+    <strong>Date:</strong>
+    @Model.PerformanceDate.ToString("dddd, dd MMMM yyyy HH:mm")
+</div>
+<br />
+<div>
+    <strong>Venue:</strong>
+    @Model.VenueName
+</div>
+<br />
+
+@{ var prevSeatNumber = 0; }
+
+@foreach (var ticketDetail in Model.Tickets)
+{
+    var currSeatNumber = ticketDetail.Seat.OrdinalValue;
+
+    if (currSeatNumber <= prevSeatNumber)
+    {
+        <br />
+    }
+
+    var backgroundColor = "#666666";
+
+    switch (@ticketDetail.TicketStatusName)
+    {
+        case "Sold":
+            backgroundColor = "#cccccc";
+            break;
+        case "UnSold":
+            backgroundColor = "#669966";
+            break;
+        case "SalePending":
+            backgroundColor = "#cc9966";
+            break;
+        case "Reserved":
+            backgroundColor = "#6699cc";
+            break;
+        default:
+            backgroundColor = "#666666";
+            break;
+    }
+
+    <span style="border:1px solid; display:inline-block; padding: 1em; margin: 0.3em; width: 90px; background-color:@backgroundColor">
+
+        @foreach (var seatPosition in ticketDetail.Seat.SeatPositions)
+        {
+            @seatPosition.SeatPositionTypeName
+            @Html.Raw("&nbsp;");
+            @seatPosition.DisplayValue<br />
+        }
+        Seat @ticketDetail.Seat.DisplayValue<br />
+        @string.Format("{0:C}",ticketDetail.Price)
+        <br />
+        <a asp-area="Admin" 
+            asp-controller="TicketAdmin" 
+            asp-action="Detail" 
+            asp-route-id="@ticketDetail.Id">
+            <i class="fas fa-eye"></i>
+        </a>
+        @if (ticketDetail.TicketStatusName == "UnSold")
+        {
+            @Html.Raw("&nbsp;");
+            <a asp-area="Admin"
+               asp-controller="TicketAdmin" 
+               asp-action="Edit" 
+               asp-route-id="@ticketDetail.Id">
+               <i class="fas fa-edit"></i>
+            </a>
+        }
+
+    </span>
+
+    prevSeatNumber = currSeatNumber;
+} 
+
+<br />
+<br />
+
+@if (Model.ReturnUrl.Contains("CreateTickets"))
+{
+    // we came from an add page so redirect to list page
+    <a class="btn btn-sm btn-outline-dark"
+       asp-area="Admin"
+       asp-controller="PerformanceAdmin"
+       asp-action="Detail"
+       asp-route-id="@Model.PerformanceId">Back</a>
+}
+else
+{
+    <a class="btn btn-sm btn-outline-dark"
+       href="@Model.ReturnUrl">Back</a>
+}

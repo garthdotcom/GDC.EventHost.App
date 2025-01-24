@@ -6,6 +6,8 @@ namespace GDC.EventHost.Shared.Performance
 {
     public class PerformanceForUpdateDto
     {
+        public Guid Id { get; set; }
+
         [Display(Name = "Date")]
         [Required(ErrorMessage = "You should enter a Performance Date.")]
         [DateIsFutureOrNull]

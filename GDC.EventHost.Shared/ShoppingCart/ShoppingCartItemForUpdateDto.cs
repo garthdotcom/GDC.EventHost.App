@@ -4,10 +4,10 @@ namespace GDC.EventHost.Shared.ShoppingCart
 {
     public class ShoppingCartItemForUpdateDto
     {
-        public required Guid Id { get; set; }
+        public Guid Id { get; set; }
 
-        public required TicketDto Ticket { get; set; }
+        public TicketDto Ticket { get; set; }
 
-        public required Guid ShoppingCartId { get; set; }
+        public Guid ShoppingCartId { get; set; }
     }
 }

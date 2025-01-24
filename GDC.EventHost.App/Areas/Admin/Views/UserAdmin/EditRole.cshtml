@@ -1,0 +1,45 @@
+﻿@using GDC.EventHost.App.Admin.ViewModels.User
+@model EditRoleVM
+
+<h4>Edit Role</h4>
+
+<form asp-controller="UserAdmin" asp-action="EditRole" method="post" class="form-horizontal" role="form">
+    <hr />
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="Id" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Id" class="form-control" readonly="readonly" />
+            <span asp-validation-for="Id" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="RoleName" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="RoleName" class="form-control" />
+            <span asp-validation-for="RoleName" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-primary" value="Save" />
+            <a asp-action="RoleManagement" class="btn btn-primary">Cancel</a>
+        </div>
+    </div>
+</form>
+
+<h3>Users in this role</h3>
+<ul>
+    @foreach (var user in Model.Users)
+    {
+        <li>
+            @user
+        </li>
+    }
+</ul>
+
+<a asp-action="AddUserToRole" asp-route-roleId="@Model.Id" class="btn btn-primary">Add Users to Role</a>
+<a asp-action="DeleteUserFromRole" asp-route-roleId="@Model.Id" class="btn btn-primary">Remove Users from Role</a>

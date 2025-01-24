@@ -1,0 +1,50 @@
+﻿@using GDC.EventHost.App.Areas.Admin.ViewModels
+@model AssetDetailVM
+
+<h4>Asset - @Model.Asset.Name</h4>
+<br />
+<div>
+    <strong>Name:</strong>
+    @Model.Asset.Name
+</div>
+<br />
+<div>
+    <strong>Description:</strong>
+    @Model.Asset.Description
+</div>
+<br />
+<div>
+    <strong>Uri:</strong>
+    @Model.Asset.Uri
+</div>
+<br />
+<div>
+    <strong>Original Image:</strong>
+</div>
+<br />
+<div>
+    <img src="@Url.Content(Model.Asset.Uri)" alt="@Model.Asset.Name"/>
+</div>
+<br />
+<div>
+    @if (Model.ReturnUrl.Contains("Edit"))
+    {
+        // we came from an edit page so redirect to list page
+        <a class="btn btn-sm btn-outline-dark"
+           asp-area="Admin"
+           asp-controller="AssetAdmin"
+           asp-action="Index">Back</a>
+    }
+    else
+    {
+        <a class="btn btn-sm btn-outline-dark"
+           href="@Model.ReturnUrl">Back</a>
+    }
+    &nbsp;
+    <a class="btn btn-sm btn-outline-dark"
+       asp-area="Admin"
+       asp-controller="AssetAdmin"
+       asp-action="Edit" 
+       asp-route-id="@Model.Asset.Id">Edit</a>
+</div>
+

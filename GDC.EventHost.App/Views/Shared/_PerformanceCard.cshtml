@@ -1,0 +1,34 @@
+﻿@model PerformanceDetailDto
+
+<div class="row eh-bottom-border-color">
+    <div class="col-xl-2 eh-thumbnail" >
+        <div class="row eh-row-spacer">&nbsp;</div>
+
+        <a class="btn btn-primary" 
+                asp-controller="Performances" 
+                asp-action="Detail" 
+                asp-route-id="@Model.Id">View</a>
+        &nbsp;
+        <a class="btn btn-primary" 
+                asp-controller="Performances" 
+                asp-action="Edit" 
+                asp-route-id="@Model.Id">Edit</a>
+
+        <div class="row eh-row-spacer">&nbsp;</div>
+    </div>
+    <div class="col-xl-10">
+        <div class="row eh-row-spacer">&nbsp;</div>
+        <div class="row">
+            <div class="col eh-left-just eh-pad-bottom">
+
+                <div>@Model.Date.ToString("dddd, dd MMMM yyyy HH:mm")</div>
+                
+                <a class="eh-link"
+                   asp-controller="Venues"
+                   asp-action="Detail" 
+                   asp-route-id="@Model.VenueId">@Model.VenueName</a>
+
+            </div>
+        </div>
+    </div>
+</div>

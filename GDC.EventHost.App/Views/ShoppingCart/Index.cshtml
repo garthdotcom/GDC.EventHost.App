@@ -1,0 +1,61 @@
+﻿@model ShoppingCartVM
+
+<h4>Your shopping cart</h4>
+<br />
+<table class="table">
+    <thead>
+    <tr>
+        <th>Seat</th>
+        <th class="text-right">Price</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var shoppingCartItem in Model.ShoppingCart.ShoppingCartItems)
+    {
+        var stringBuilder = new System.Text.StringBuilder();
+
+        stringBuilder.Append($"{shoppingCartItem.Ticket.PerformanceTitle}, ");
+        stringBuilder.Append($"{shoppingCartItem.Ticket.PerformanceDate.ToString("dd MMMM yyyy HH:mm")}, ");
+        stringBuilder.Append($"{shoppingCartItem.Ticket.VenueName} - ");
+
+        @foreach (var seatPosition in shoppingCartItem.Ticket.Seat.SeatPositions)
+        {
+            stringBuilder.Append($"{seatPosition.SeatPositionTypeName} {seatPosition.DisplayValue}, ");
+        }
+
+        stringBuilder.Append($" Seat {shoppingCartItem.Ticket.Seat.DisplayValue}");
+
+        <tr>
+            <td class="text-left">@stringBuilder.ToString()</td>
+            <td class="text-right">@shoppingCartItem.Ticket.Price.ToString("c")</td>
+            <td class="text-right">
+                <a asp-area=""
+                    asp-controller="ShoppingCart"
+                    asp-action="RemoveItem"
+                    asp-route-shoppingCartItemId="@shoppingCartItem.Id"
+                    class="btn btn-sm btn-outline-dark">Remove</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+    <tfoot>
+    <tr>
+        <td class="text-right">Total:</td>
+        <td class="text-right">
+            @Model.ShoppingCartTotal.ToString("c")
+        </td>
+        <td>
+            &nbsp;
+        </td>
+    </tr>
+    </tfoot>
+</table>
+<br />
+<a class="btn btn-sm btn-outline-dark"
+   href="@Model.ReturnUrl">Back</a>
+&nbsp;
+<a class="btn btn-sm btn-outline-dark"
+    asp-area=""
+    asp-controller="Orders"
+    asp-action="Checkout">Checkout Now</a>

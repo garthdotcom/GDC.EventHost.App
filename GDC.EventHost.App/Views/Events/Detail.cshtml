@@ -1,0 +1,80 @@
+﻿@model EventDetailVM
+
+<h4>@Model.Event.Title</h4>
+
+<div>
+    @if (@Model.Event.StartDate.HasValue)
+    {
+        <span>
+        <time datetime="@Model.Event.StartDate.Value.ToString("dddd, dd MMMM yyyy")">
+            @Model.Event.StartDate.Value.ToString("dddd, dd MMMM yyyy")</time>
+        </span>
+    }
+    @if (@Model.Event.EndDate.HasValue)
+    {
+        <span>&nbsp;-&nbsp;
+            <time datetime="@Model.Event.EndDate.Value.ToString("dddd, dd MMMM yyyy")">
+                @Model.Event.EndDate.Value.ToString("dddd, dd MMMM yyyy")</time>
+        </span>
+    }
+</div>
+<br />
+<div>
+    <div>
+        <strong>Series:</strong>
+        <a asp-area="" 
+           asp-controller="Series" 
+           asp-action="Detail" 
+           asp-route-id="@Model.Event.SeriesId">@Model.Event.SeriesTitle</a> 
+    </div>
+    <br />
+    <div style="column-count:2">
+        <p>
+            @Model.Event.LongDescription
+            <br /> 
+            <div>
+                <strong>Upcoming dates:</strong>
+            </div>
+
+            @if (Model.Event.Performances.Count == 0)
+            {
+                var message = "No dates have been added yet.";
+                <div class="row eh-row-spacer">&nbsp;</div>
+                <div class="card-deck">   
+                    <partial name="_TextCard" model="message" />
+                </div>
+            }
+            <div style="break-inside:avoid">
+                @foreach (var performance in Model.Event.Performances)
+                { 
+                    <div class="row eh-row-spacer">&nbsp;</div>
+                    <div class="card-deck"> 
+                        <partial name="_PerformanceDateCardNoTitle" model="performance" />
+                    </div>
+                }
+             </div>
+        </p>
+        @await Component.InvokeAsync("GetImage",
+        new
+        {
+            entityId = Model.Event.Id,
+            entityType = "Event",
+            assetType = Enums.AssetTypeEnum.MediumImage
+        })
+    </div>
+</div>
+<br />
+<br />
+<div>
+    <a class="btn btn-sm btn-outline-dark" 
+       href="@Model.ReturnUrl">
+        Back
+    </a>
+    &nbsp;
+    <a class="btn btn-sm btn-outline-dark" 
+        asp-area=""
+        asp-controller="Events"
+        asp-action="List">
+        Event List
+    </a>
+</div>

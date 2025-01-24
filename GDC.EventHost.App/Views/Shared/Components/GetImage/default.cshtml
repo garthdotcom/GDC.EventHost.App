@@ -1,0 +1,29 @@
+﻿@if (string.IsNullOrEmpty(Model.Uri))
+{
+    <span>
+        No image found
+    </span>
+}
+else
+{
+    if (Model.Height != 0 && Model.Width == 0)
+    {
+        <!-- Card Top images specify only a height -->
+        <img src="@Url.Content(Model.Uri)" 
+                alt="@Model.Name" 
+                height="@Model.Height"
+                class="card-img-top"/>
+    }
+    else if (Model.Height != 0 && Model.Width != 0)
+    {
+        <img src="@Url.Content(Model.Uri)" 
+                alt="@Model.Name" 
+                height="@Model.Height" 
+                width="@Model.Width"
+                style="border-radius:10px"/>
+    }
+    else
+    {
+        <img src="@Url.Content(Model.Uri)" alt="@Model.Name" style="max-width:100%; height:auto; border-radius:10px;" />
+    }
+}

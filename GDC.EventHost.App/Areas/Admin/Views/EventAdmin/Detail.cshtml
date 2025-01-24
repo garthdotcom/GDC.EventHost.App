@@ -1,0 +1,166 @@
+﻿@using GDC.EventHost.App.Areas.Admin.ViewModels
+@model EventDetailVM
+
+<h4>Event / @Model.Event.Title</h4>
+<br />
+<div>
+    @if (@Model.Event.StartDate.HasValue)
+    {
+        <span>
+        <time datetime="@Model.Event.StartDate.Value.ToString("dddd, dd MMMM yyyy HH:mm")">
+            @Model.Event.StartDate.Value.ToString("dddd, dd MMMM yyyy HH:mm")</time>
+        </span>
+    }
+    @if (@Model.Event.EndDate.HasValue)
+    {
+        <span>&nbsp;-&nbsp;
+            <time datetime="@Model.Event.EndDate.Value.ToString("dddd, dd MMMM yyyy HH:mm")">
+                @Model.Event.EndDate.Value.ToString("dddd, dd MMMM yyyy HH:mm")</time>
+        </span>
+    }
+</div>
+<br />
+
+<div>
+    <strong>Series:</strong>
+    @Model.Event.SeriesTitle
+</div>
+<br />
+
+<div>
+    <strong>Description:</strong>
+    @Model.Event.Description
+</div>
+<br />
+
+<div>
+    <strong>Long Description:</strong>
+    @Model.Event.LongDescription
+</div>
+<br />
+
+
+@if (Model.Event.EventAssets.Count > 0)
+{
+    <div>
+        <table class="table">
+            <tr>
+                <th>
+                    Asset Name
+                </th>
+                <th>
+                    Type
+                </th>
+                <th></th>
+            </tr>
+            @foreach (var eventAsset in Model.Event.EventAssets)
+            {
+                <tr>
+                    <td>
+                        @eventAsset.Name
+                    </td>
+                    <td>
+                        @eventAsset.AssetTypeValue
+                    </td>
+                    <td>
+                        <a asp-area="Admin" 
+                           asp-controller="EventAssetAdmin" 
+                           asp-action="Detail" 
+                           asp-route-id="@eventAsset.Id">View</a>
+                        &nbsp;|&nbsp;
+                        <a asp-area="Admin" 
+                           asp-controller="EventAssetAdmin" 
+                           asp-action="Delete" 
+                           asp-route-id="@eventAsset.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+<div>
+    <a class="btn btn-sm btn-outline-dark"
+       asp-area="Admin" 
+       asp-controller="EventAssetAdmin" 
+       asp-action="Add" 
+       asp-route-eventsummaryId="@Model.Event.Id">Add Asset</a>
+</div>
+<br />
+
+@if (Model.Event.Performances.Count > 0)
+{
+    <div>
+        <table class="table">
+            <tr>
+                <th>
+                    Date
+                </th>
+                <th>
+                    Venue
+                </th>
+                <th></th>
+            </tr>
+            @foreach (var eventItem in Model.Event.Performances)
+            {
+                <tr>
+                    <td>
+                        @eventItem.Date.ToString("dddd, dd MMMM yyyy HH:mm")
+                    </td>
+                    <td>
+                        @eventItem.VenueName
+                    </td>
+                    <td>
+                        <a asp-area="Admin" 
+                           asp-controller="EventAdmin" 
+                           asp-action="Detail" 
+                           asp-route-id="@eventItem.Id">View</a>
+                        &nbsp;|&nbsp;
+                        <a asp-area="Admin" 
+                           asp-controller="EventAdmin" 
+                           asp-action="Edit" 
+                           asp-route-id="@eventItem.Id"
+                           asp-route-eventId="@Model.Event.Id">Edit</a>
+                        &nbsp;|&nbsp;
+                        <a asp-area="Admin" 
+                           asp-controller="EventAdmin" 
+                           asp-action="Delete" 
+                           asp-route-id="@eventItem.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+<div>
+    <a class="btn btn-sm btn-outline-dark"
+       asp-area="Admin" 
+       asp-controller="EventAdmin" 
+       asp-action="Edit" 
+       asp-route-eventsummaryId="@Model.Event.Id">Add Date</a>
+</div>
+<br />
+<div>
+
+</div>
+<br />
+<div>
+    @if (Model.ReturnUrl.Contains("Edit") || Model.ReturnUrl.Contains("Add"))
+    {
+        // we came from an edit page so redirect to summary list page
+        <a class="btn btn-sm btn-outline-dark"
+           asp-area="Admin"
+           asp-controller="EventAdmin"
+           asp-action="Index">Back</a>
+    }
+    else
+    {
+        <a class="btn btn-sm btn-outline-dark"
+           href="@Model.ReturnUrl">Back</a>
+    }
+    &nbsp;
+    <a class="btn btn-sm btn-outline-dark"
+       asp-area="Admin"
+       asp-controller="EventAdmin"
+       asp-action="Edit" 
+       asp-route-id="@Model.Event.Id">Edit</a>
+</div>

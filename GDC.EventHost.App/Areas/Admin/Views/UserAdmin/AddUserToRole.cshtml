@@ -1,0 +1,15 @@
+﻿@using GDC.EventHost.App.Areas.Admin.ViewModels.User
+@model UserRoleVM
+
+<h4>Add User to Role</h4>
+
+<form asp-controller="UserAdmin" asp-action="AddUserToRole">
+    <input type="hidden" name="roleId" value="@Model.RoleId" />
+    <select asp-for="UserId"
+            asp-items="@(new SelectList(Model.Users, "Id", "UserName"))">
+        <option>Please select a user</option>
+    </select>
+    <input class="btn btn-primary" value="Add to Role" type="submit" />
+</form>
+
+<a asp-action="RoleManagement" class="btn btn-primary">Done</a>

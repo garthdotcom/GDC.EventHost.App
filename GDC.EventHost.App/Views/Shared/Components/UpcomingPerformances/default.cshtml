@@ -1,0 +1,61 @@
+﻿@model UpcomingPerformancesViewModel
+
+<div class="card-deck">
+    @foreach (var performance in Model.PerformanceList)
+    {
+        <div class="card">
+            @*<img src="..." class="card-img-top" alt="...">*@
+            <div class="card-body">
+
+                <h5 class="card-title">
+                    <a asp-controller="Performances" 
+                       asp-action="Detail" 
+                       asp-route-id="@performance.Id">@performance.EventTitle</a>
+                </h5>
+
+                <p class="card-text">
+                    @performance.Date.ToString("dddd, dd MMMM yyyy HH:mm")
+                </p>
+
+                <p class="card-text">
+                    <a asp-controller="Venues" 
+                       asp-action="Detail" 
+                       asp-route-id="@performance.VenueId">@performance.VenueName</a>
+                </p>
+
+            </div>
+            <div class="card-footer">
+                <p class="card-text">
+                    @if (performance.TicketCount.TotalTickets > 0)
+                    {
+                        if (performance.TicketCount.RemainingTickets > 0)
+                        {
+                            <a asp-area="" 
+                                asp-controller="Tickets" 
+                                asp-action="List" 
+                                asp-route-eventId="@performance.Id">
+                    
+                                @if (performance.TicketCount.RemainingTickets <= 10)
+                                {
+                                    @Html.Raw($"BUY NOW ({performance.TicketCount.RemainingTickets} LEFT)");
+                                }
+                                else
+                                {
+                                    @Html.Raw($"BUY TICKETS");
+                                }
+                            </a>
+                        }
+                        else
+                        {
+                            @Html.Raw("<span>SOLD OUT</span>");
+                        }
+                    }
+                    else
+                    {
+                        @Html.Raw("<span>COMING SOON</span>");
+                    }
+                </p>
+            </div>
+        </div>
+    }
+</div>

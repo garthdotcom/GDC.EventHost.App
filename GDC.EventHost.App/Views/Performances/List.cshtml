@@ -1,0 +1,26 @@
+﻿@model PerformanceListVM
+
+<div class="container">
+    <div class="row">
+        <div class="col-xl-3 eh-background-pattern">
+            <form method="get">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="search" class="form-control" asp-for="SearchQuery" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-default">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-xl-9">
+            @foreach (var performanceItem in Model.PerformanceDetails)
+            {
+                <partial name="_PerformanceCard" model="performanceItem" />
+            }
+        </div>
+    </div>
+</div>

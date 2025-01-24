@@ -1,0 +1,105 @@
+﻿@using GDC.EventHost.App.Areas.Admin.ViewModels
+@model SeatingPlanDetailVM
+
+
+<h4>SeatingPlan / @Model.SeatingPlanDetail.Name</h4>
+<br />
+
+<div>
+    <strong>Venue:</strong>
+    @Model.SeatingPlanDetail.VenueName
+</div>
+<br />
+
+@if (Model.SeatingPlanDetail.SeatsForDisplay.Count == 0)
+{
+    <div>
+        <span>No seats have yet been added for this performance.</span>
+    </div>
+}
+else
+{
+    var prevSeatNumber = 0;
+
+    foreach (var seatForDisplay in Model.SeatingPlanDetail.SeatsForDisplay)
+    {
+        var currSeatNumber = seatForDisplay.OrdinalValue;
+
+        if (currSeatNumber <= prevSeatNumber)
+        {
+            <br />
+        }
+
+        var backgroundColor = "#666666";
+
+        switch (@seatForDisplay.SeatTypeName)
+        {
+            case "Standard":
+                backgroundColor = "#f2d9e4";
+                break;
+            case "Premium":
+                backgroundColor = "#dea0bb";
+                break;
+            case "Standing":
+                backgroundColor = "#bfbfbf";
+                break;
+            case "Reserved":
+                backgroundColor = "#a3a3c2";
+                break;
+            case "Wheelchair":
+                backgroundColor = "#b3d9ff";
+                break;
+            case "GeneralAdmission":
+                backgroundColor = "#8c8c8c";
+                break;
+            default:
+                backgroundColor = "#666666";
+                break;
+        }
+
+        <span style="border:1px solid; display:inline-block; padding: 1em; margin: 0.3em; width: 90px; background-color:@backgroundColor">
+
+            @foreach (var seatPosition in seatForDisplay.SeatPositions)
+            {
+                @seatPosition.SeatPositionTypeName
+                @Html.Raw("&nbsp;");
+                @seatPosition.DisplayValue<br />
+            }
+            Seat @seatForDisplay.DisplayValue
+            <br />
+            <a asp-area="Admin" 
+                asp-controller="SeatAdmin" 
+                asp-action="Detail" 
+                asp-route-id="@seatForDisplay.Id">
+                <i class="fas fa-eye"></i>
+            </a>
+            &nbsp;&nbsp;
+            <a asp-area="Admin" 
+                asp-controller="SeatAdmin" 
+                asp-action="Delete" 
+                asp-route-id="@seatForDisplay.Id">
+                <i class="fas fa-times-circle"></i>
+            </a>
+
+        </span>
+
+        prevSeatNumber = currSeatNumber;
+    }
+} 
+<br />
+<br />
+@if (Model.PerformanceId.HasValue)
+{
+    <a class="btn btn-sm btn-outline-dark"
+       asp-area="Admin"
+       asp-controller="PerformanceAdmin"
+       asp-action="Detail"
+       asp-route-id="@Model.PerformanceId.Value">Back</a>
+}
+else
+{
+    <a class="btn btn-sm btn-outline-dark"
+       asp-area="Admin"
+       asp-controller="SeatingPlanAdmin"
+       asp-action="Index">Back</a>
+} 

@@ -6,6 +6,8 @@ namespace GDC.EventHost.Shared.Series
 {
     public class SeriesForUpdateDto
     {
+        public Guid Id { get; set; }
+
         [Display(Name = "Title")]
         [Required(ErrorMessage = "You should enter a title.")]
         [MaxLength(150, ErrorMessage = "The title should not be longer than 150 characters.")]

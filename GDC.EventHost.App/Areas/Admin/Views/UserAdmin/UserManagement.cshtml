@@ -1,0 +1,111 @@
+﻿@using GDC.EventHost.App.Auth
+@using GDC.EventHost.App.Areas.Admin.ViewModels.User
+@using Microsoft.AspNetCore.Identity
+@model UserListVM
+
+<form method="get">
+    <div class="form-group">
+        <div class="input-group">
+            <input type="search" 
+                   class="form-control" 
+                   placeholder="Enter value to search..." 
+                   asp-for="SearchQuery"
+                   value="@ViewData["CurrentFilter"]"/>
+            <span class="input-group-btn">
+                <button class="btn btn-default">
+                    <i class="fas fa-search"></i>
+                </button>
+            </span>
+        </div>
+    </div>
+</form>
+<h4>Users</h4>
+<br />
+@if (Model.UserList.Count == 0)
+{
+    <tr><td colspan="3" class="text-center">No User Accounts</td></tr>
+}
+else
+{
+    <table class="table">
+        <tr>
+            <th style="width:200px">
+                <a asp-action="UserManagement" 
+                    asp-route-sortOrder="@ViewData["UserNameSortParm"]"
+                    asp-route-searchQuery="@ViewData["CurrentFilter"]">
+                    Username
+                    <i class="fas fa-sort"></i>
+                </a>
+            </th>
+            <th style="width:400px">
+                <a asp-action="UserManagement" 
+                    asp-route-sortOrder="@ViewData["EmailAddressSortParm"]"
+                    asp-route-searchQuery="@ViewData["CurrentFilter"]">
+                    Email Address
+                    <i class="fas fa-sort"></i>
+                </a>
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (EventHostUser user in Model.UserList)
+        {
+            <tr>
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+                <td style="text-align:right; padding-bottom:0">
+                    <form asp-action="DeleteUser" asp-route-userId="@user.Id" method="post">
+                        <a class="btn btn-sm btn-link text-dark" 
+                           asp-action="EditUser" 
+                           asp-route-id="@user.Id">Edit</a>
+                        |
+                        <button type="submit" 
+                                onclick="return confirm('Do you really want to delete this user?');" 
+                                class="btn btn-sm btn-link text-dark">
+                            Delete
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+
+        <tr>
+            <td colspan="3" style="text-align:center">
+                @{
+                    var prevDisabled = !Model.UserList.HasPreviousPage ? "disabled" : "";
+                    var nextDisabled = !Model.UserList.HasNextPage ? "disabled" : "";
+                }
+
+                <a asp-action="Index"
+                    asp-route-sortOrder="@ViewData["CurrentSort"]"
+                    asp-route-pageNumber="@(Model.UserList.PageIndex - 1)"
+                    asp-route-searchQuery="@ViewData["CurrentFilter"]"
+                    class="btn btn-sm btn-link text-dark @prevDisabled">
+                    @Html.Raw("<")
+                </a>
+
+                <span class="btn btn-sm text-dark">
+                    @(Model.UserList.PageIndex) of @(Model.UserList.TotalPages)
+                </span>
+
+                <a asp-action="Index"
+                    asp-route-sortOrder="@ViewData["CurrentSort"]"
+                    asp-route-pageNumber="@(Model.UserList.PageIndex + 1)"
+                    asp-route-searchQuery="@ViewData["CurrentFilter"]"
+                    class="btn btn-sm btn-link text-dark @nextDisabled">
+                    @Html.Raw(">")
+                </a>
+            </td>
+        </tr>
+    </table>
+}
+
+<div>
+    <a class="btn btn-sm btn-outline-dark"
+       asp-area="Admin" 
+       asp-controller="Home"
+       asp-action="Index">Back to Menu</a>
+    &nbsp;
+    <a class="btn btn-sm btn-outline-dark" 
+       asp-action="AddUser">Create User</a>
+</div>

@@ -1,22 +1,369 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+}
+
+/* Provide sufficient contrast against white background */
+a {
+    color: #808080;
+}
+
+a.dropdown-item:active {
+    background-color: #808080;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: black;
+    border-color: black;
+    font-size: small
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: black;
+    border-color: black;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+.border-top {
+    border-top: 1px solid #e5e5e5;
 }
 
+.border-bottom {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+    font-size: 1rem;
+    line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    font-size: 0.9em;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px; /* Vertically center the text there */
+}
+
+/**************************************************************************/
+/* my custom styles follow */
+
+.filter-button {
+    border: 0 none;
+    background: none;
+    font-size: 0.6em;
+    vertical-align:middle;
+}
+.filter-button:focus {
+    outline: 0 none;
+}
+
+/* bootstrap tooltips with popper are a pain */
+
+.mytooltip-ex { /* Container for our tooltip */
+    color: black;
+    letter-spacing: 0.2em;
+    font-size: 2em;
+    font-family: Arial, Helvetica, sans-serif;
+    position: relative;
+    display: inline-block;
+    cursor: help;
+    margin-right: 20px;
+    float: left;
+}
+
+.mytooltip-ex-right {
+    top: -5px;
+    left: 125%;
+}
+
+.mytooltip-ex-text {
+    visibility: hidden;
+    position: absolute;
+    width: 150px;
+    background-color: #808080;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity .6s;
+    font-size: x-small;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    letter-spacing: initial;
+}
+
+.mytooltip-ex:hover .mytooltip-ex-text { /* Makes tooltip visible when hovered on */
+    visibility: visible;
+    opacity: 1;
+}
+
+
+
+
+
+
+.card-columns {
+    column-count: 2;
+}
+
+h1, h2, h3 {
+    color: black;
+    letter-spacing: 0.2em;
+    font-size: 2em;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h4 {
+    color: black;
+    letter-spacing: 0.2em;
+    font-size: 1.6em;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h5 {
+    color: black;
+    letter-spacing: 0.2em;
+    font-size: 1.4em;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h6 {
+    color: black;
+    letter-spacing: 0.2em;
+    font-size: 1.2em;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
+a:hover {
+    color: black;
+    text-decoration: underline;
+}
+
+.eh-thumbnail {
+    text-align: center;
+    vertical-align: middle;
+    padding: 0.4em 0.4em 0.4em 0.4em;
+}
+
+.eh-gray-button {
+    background-color: lightgray;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 3.4em;
+}
+
+.eh-row-spacer {
+    line-height: 0.8em;
+}
+
+.eh-smalltext {
+    font-size: 0.8em;
+}
+
+.eh-colortext {
+    color: brown;
+}
+
+.eh-left-just {
+    padding-left: 0;
+}
+
+.eh-background-pattern {
+    background-image: url('../img/white-waves.png');
+}
+
+.eh-bottom-border-white {
+    border-bottom: solid 1px white;
+}
+
+.eh-event-list-row {
+    vertical-align: middle;
+    line-height: 2.4em;
+}
+
+/*p {
+    line-height: 1.2em;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.8em;
+}*/
+
+/*.eh-heading-color {
+    color: black;
+    letter-spacing: 0.2em;
+    font-size: 1.4em;
+    font-family: Arial, Helvetica, sans-serif;
+}*/
+
+/*.eh-button-text-light {
+    color: #fff;
+    text-decoration: none;
+}
+
+.eh-button-text-light:hover {
+    color: #fff;
+    text-decoration: none;
+}*/
+
+
+
+
+
+
+
+
+/* padding top right bottom left */
+
+
+.eh-background-gray {
+    background-color: gainsboro
+}
+
+
+
+.eh-bottom-border-color {
+    border-bottom: solid 1px darkmagenta;
+}
+
+
+.eh-bottom-border-solid {
+    border-bottom: solid 1px black;
+}
+.eh-top-border-dotted {
+    border-top: dotted 1px black;
+}
+.eh-event-row {
+    border-top: dotted 1px gray;
+    border-bottom: dotted 1px gray;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.eh-pad-bottom {
+    padding-bottom: 1em;
+}
+
+.eh-event-summ-list {
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 0.4em 0 0.4em 0;
+}
+
+.eh-event-summ-list-desc {
+    line-height: 1.2em;
+    font-size: 0.8em;
+    background-color: gray;
+}
+
+.eh-event-list {
+    /*padding-left:1em;*/
+}
+
+.eh-event-list-button {
+    border-top: solid 1px white;
+    border-right: solid 1px white;
+    vertical-align: middle;
+    background-color: gray;
+}
+
+.eh-event-list-desc {
+    border-top: solid 1px white;
+    vertical-align: middle;
+    background-color: lightgray;
+    /*padding-right: 0;*/
+    font-size: 0.8em;
+}
+
+
+
+
+
+#subNav {
+    background-color: darkmagenta;
+    letter-spacing: 0.2em;
+    padding-top: 0.4em;
+    text-indent: 1em;
+    font-family: Arial, Helvetica, sans-serif;
+    vertical-align: middle;
+    font-size: 1em;
+}
+
+#eventDetailContainer {
+    background-color: lavender;
+    border: solid 1px;
+}
+
+
+
+/*.colorborder {
+    border-color: darkmagenta;
+}*/
+
+/*.row {
+    line-height: 1.2em;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:small;
+}*/
+
+
+
+/* useful to see the column borders */
+/*div[class^="col"] {
+    border: solid 1px;
+    
+}*/
+
+/* Validation styles
+-------------------------------------------------- */
+#customValidationSummary ul {
+    padding: 0;
+    list-style-type: none;
 }

@@ -1,0 +1,18 @@
+﻿@model SeriesListVM
+
+<div class="container">
+    <div class="row eh-bottom-border-solid">
+        <div class="col-xl eh-left-just">
+            <h3>Series</h3>
+        </div>
+    </div>
+    <br />
+    <div class="card-columns">
+
+        @foreach (var series in Model.SeriesList)
+        {
+            <partial name="_SeriesCard" model="series" />
+        }
+
+    </div>
+</div>

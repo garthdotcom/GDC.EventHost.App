@@ -1,0 +1,48 @@
+﻿@model EventDetailDto
+
+<div class="card" style="margin-bottom:0px">
+    <div class="row"> 
+        <div class="col-md-2">
+            <div class="card-body">
+                <a asp-controller="Events" 
+                    asp-action="Detail" 
+                    asp-route-id="@Model.Id">
+                        @await Component.InvokeAsync("GetImage", 
+                        new { 
+                            entityId = Model.Id, 
+                            entityType = "Event", 
+                            assetType = Enums.AssetTypeEnum.SmallImage,
+                            height = 100,
+                            width = 78
+                        })
+                </a>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="card-body text-left" style="padding-left:2em">
+                <a asp-controller="Events" 
+                   asp-action="Detail" 
+                   asp-route-id="@Model.Id">
+                   <h6>@Model.Title</h6>
+                </a>
+                @Model.Description
+                <br />
+                @if (Model.StartDate.HasValue)
+                {
+                    <br />
+                    @Model.StartDate.Value.ToString("dd MMMM yyyy")       
+                    @Html.Raw("&nbsp;to&nbsp;")
+                }
+                else
+                {
+                    <br />
+                    <span>Dates to be announced</span>
+                }
+                @if (Model.EndDate.HasValue)
+                {
+                    @Model.EndDate.Value.ToString("dd MMMM yyyy")
+                }
+            </div>
+        </div>
+    </div>
+</div>

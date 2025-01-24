@@ -1,0 +1,60 @@
+﻿@model PerformanceDetailDto
+
+<div class="card">
+    <div class="row no-gutters"> 
+        <div class="col-md-7" style="display:flex;align-items:center">
+            <div class="card-body">
+                <a asp-area=""
+                    asp-controller="Events" 
+                    asp-action="Detail" 
+                    asp-route-id="@Model.EventId">
+                    <strong>@Model.EventTitle</strong></a>
+                <br />
+                <a asp-controller="Performances"
+                    asp-action="Detail"
+                    asp-route-id="@Model.Id">
+                @Model.Date.ToString("dddd, dd MMMM yyyy HH:mm")</a>
+
+            </div>
+        </div>
+        <div class="col-md-5" style="display:flex;align-items:center">
+            <div class="card-body text-right">
+                @if (Model.TicketCount.TotalTickets > 0)
+                {
+                    if (Model.TicketCount.RemainingTickets > 0)
+                    {
+                        @if (Model.TicketCount.RemainingTickets <= 10)
+                        {
+                            <a asp-area="" 
+                                asp-controller="Tickets" 
+                                asp-action="List" 
+                                asp-route-eventId="@Model.Id"
+                                class="btn btn-sm btn-warning">
+                                @Html.Raw($"Buy Tickets ({Model.TicketCount.RemainingTickets} left)")
+                            </a>  
+                        }
+                        else
+                        {
+                            <a asp-area="" 
+                                asp-controller="Tickets" 
+                                asp-action="List" 
+                                asp-route-eventId="@Model.Id"
+                                class="btn btn-sm btn-outline-dark">
+                                @Html.Raw($"Buy Tickets")
+                            </a>
+                        }
+                    }
+                    else
+                    { 
+                        <span class="btn btn-sm btn-dark">Sold Out</span>
+                    }
+                }
+                else
+                {
+                    <span class="btn btn-sm btn-dark">On Sale Soon</span>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+                            

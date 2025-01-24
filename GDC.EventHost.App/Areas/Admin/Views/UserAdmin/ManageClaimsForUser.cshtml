@@ -1,0 +1,45 @@
+﻿@using GDC.EventHost.App.Areas.Admin.ViewModels.User
+@model ClaimsManagementVM
+
+<h4>Manage Claims for @Model.UserName</h4>
+
+<br />
+<table class="table table-condensed table-bordered">
+    <tr>
+        <th>Claim Name</th>
+        <th>Actions</th>
+    </tr>
+
+@foreach (var claim in Model.UserClaimVMs)
+{
+    <tr>
+        <td>
+            @claim.ClaimValue
+        </td>
+        <td>
+            @if (claim.HasClaim)
+            {
+                <a asp-controller="UserAdmin" 
+                   asp-action="ToggleUserClaim" 
+                   asp-route-userId="@claim.UserId"
+                   asp-route-claimValue="@claim.ClaimValue"
+                   class="btn btn-sm btn-outline-dark">Remove</a>
+            }
+            else
+            {
+                <a asp-controller="UserAdmin" 
+                   asp-action="ToggleUserClaim"
+                       asp-route-userId="@claim.UserId"
+                   asp-route-claimValue="@claim.ClaimValue"
+                   class="btn btn-sm btn-outline-dark">Add</a>
+            }         
+        </td>
+    </tr>
+}
+</table>
+
+<br />
+<a asp-controller="UserAdmin" 
+    asp-action="EditUser" 
+    asp-route-id="@Model.UserId"
+    class="btn btn-sm btn-outline-dark">Done</a>

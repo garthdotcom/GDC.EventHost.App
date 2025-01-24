@@ -1,4 +1,5 @@
 ﻿using GDC.EventHost.Shared.Event;
+using GDC.EventHost.Shared.SeriesAsset;
 using System.ComponentModel.DataAnnotations;
 using static GDC.EventHost.Shared.Enums;
 
@@ -31,6 +32,6 @@ namespace GDC.EventHost.Shared.Series
 
         public List<EventDetailDto> Events { get; set; } = [];
 
-        //public List<SeriesAssetDto> SeriesAssets { get; set; } = [];
+        public List<SeriesAssetDto> SeriesAssets { get; set; } = [];
     }
 }

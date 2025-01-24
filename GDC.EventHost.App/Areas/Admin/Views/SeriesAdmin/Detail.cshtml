@@ -1,0 +1,150 @@
+﻿@using GDC.EventHost.App.Areas.Admin.ViewModels
+@model SeriesDetailVM
+
+<h4>Series / @Model.Series.Title</h4>
+<br />
+<div>
+    <span>
+    <time datetime="@Model.Series.StartDate?.ToString("dddd, dd MMMM yyyy HH:mm")">
+        @Model.Series.StartDate?.ToString("dddd, dd MMMM yyyy HH:mm")</time>
+    </span>
+
+    @if (@Model.Series.EndDate.HasValue)
+    {
+        <span>&nbsp;-&nbsp;
+            <time datetime="@Model.Series.EndDate.Value.ToString("dddd, dd MMMM yyyy HH:mm")">
+                @Model.Series.EndDate.Value.ToString("dddd, dd MMMM yyyy HH:mm")</time>
+        </span>
+    }
+</div>
+<br />
+
+<div>
+    <strong>Description:</strong>
+    @Model.Series.Description
+</div>
+<br />
+
+<div>
+    <strong>Long Description:</strong>
+    @Model.Series.LongDescription
+</div>
+<br />
+
+
+@if (Model.Series.SeriesAssets.Count > 0)
+{
+    <div>
+        <table class="table">
+            <tr>
+                <th>
+                    Asset Name
+                </th>
+                <th>
+                    Type
+                </th>
+                <th></th>
+            </tr>
+            @foreach (var seriesAsset in Model.Series.SeriesAssets)
+            {
+                <tr>
+                    <td>
+                        @seriesAsset.Name
+                    </td>
+                    <td>
+                        @seriesAsset.AssetTypeValue
+                    </td>
+                    <td>
+                        <a asp-area="Admin" 
+                           asp-controller="SeriesAssetAdmin" 
+                           asp-action="Detail" 
+                           asp-route-id="@seriesAsset.Id">View</a>
+                        &nbsp;|&nbsp;
+                        <a asp-area="Admin" 
+                           asp-controller="SeriesAssetAdmin" 
+                           asp-action="Delete" 
+                           asp-route-id="@seriesAsset.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+<div>
+    <a class="btn btn-sm btn-outline-dark"
+       asp-area="Admin" 
+       asp-controller="SeriesAssetAdmin" 
+       asp-action="Add" 
+       asp-route-seriesId="@Model.Series.Id">Add Asset</a>
+</div>
+<br />
+
+
+@if (Model.Series.Events.Count > 0)
+{
+    <div>
+        <strong>Events belonging to this series:</strong>
+    </div>
+    <br />
+    <div>
+        <table class="table">
+            <tr>
+                <th>
+                    Title
+                </th>
+                <th>
+                    Description
+                </th>
+                <th></th>
+            </tr>
+            @foreach (var eventItem in Model.Series.Events)
+            {
+                <tr>
+                    <td>
+                        @eventItem.Title
+                    </td>
+                    <td>
+                        @if (eventItem.Description.Length > 50)
+                        {
+                            @(eventItem.Description.Substring(0, 50)+"...");
+                        }
+                        else
+                        {
+                            @eventItem.Description;
+                        }
+                    </td>
+
+                    <td>
+                        <a asp-area="Admin" 
+                           asp-controller="EventAdmin" 
+                           asp-action="Detail" 
+                           asp-route-id="@eventItem.Id">View</a>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+
+<br />
+<div>
+    @if (Model.ReturnUrl.Contains("Edit") || Model.ReturnUrl.Contains("Add"))
+    {
+        // we came from an edit page so redirect to series list page
+        <a class="btn btn-sm btn-outline-dark"
+           asp-area="Admin"
+           asp-controller="SeriesAdmin"
+           asp-action="Index">Back</a>
+    }
+    else
+    {
+        <a class="btn btn-sm btn-outline-dark"
+           href="@Model.ReturnUrl">Back</a>
+    }
+    &nbsp;
+    <a class="btn btn-sm btn-outline-dark"
+       asp-area="Admin"
+       asp-controller="SeriesAdmin"
+       asp-action="Edit" 
+       asp-route-id="@Model.Series.Id">Edit</a>
+</div>

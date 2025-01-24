@@ -1,0 +1,34 @@
+﻿<heml>
+    <head>
+        <subject>GDC Event Host - Order Confirmation</subject>
+            <preview>Thank you for your order! Here are your tickets.</preview>
+        <style>
+            body { background: white; }
+            h2 { color: black; }
+        </style>
+    </head>
+    <body>
+        <container>
+            <h2>GDC Event Host</h2>  
+            <p>
+                Greetings {{memberName}}!
+            </p>
+            <p>
+                Here are the details of your order:
+            </p>
+            <p>
+                Order Number: {{orderNumber}}
+            </p>
+            <p>
+                {{messageText}}
+            </p>
+            <p>
+                We hope you enjoy the show!
+            </p>
+            <p>
+                Kind regards,<br />
+                <em>The GDC Event Host Team</em>
+            </p>
+        </container>
+    </body>
+</heml>

@@ -1,0 +1,70 @@
+﻿@model OrderDetailVM
+
+@if (!string.IsNullOrEmpty(ViewBag.Message))
+{ 
+    <h4>Order Confirmation</h4>
+    <br />
+    <div>
+        <h6>@ViewBag.Message</h6>
+    </div>
+    <br />
+}
+else
+{
+    <h4>Order Detail</h4>
+    <br />
+}
+
+<div>
+    <strong>Order Number:</strong>
+    @Model.Order.Id.ToString().ToUpper().Replace("-","")
+</div>
+<br />
+
+<div>
+    <table class="table">
+        <tr>
+            <th>
+                Ticket
+            </th>
+            <th class="text-right">
+                Price
+            </th>
+        </tr>
+        @foreach (var orderItem in Model.Order.OrderItems)
+        {
+            var stringBuilder = new System.Text.StringBuilder();
+
+            stringBuilder.Append($"{orderItem.Ticket.PerformanceTitle}, ");
+            stringBuilder.Append($"{orderItem.Ticket.PerformanceDate.ToString("dd MMMM yyyy HH:mm")}, ");
+            stringBuilder.Append($"{orderItem.Ticket.VenueName} - ");
+
+            @foreach (var seatPosition in orderItem.Ticket.Seat.SeatPositions)
+            {
+                stringBuilder.Append($"{seatPosition.SeatPositionTypeName} {seatPosition.DisplayValue}, ");
+            }
+
+            stringBuilder.Append($" Seat {orderItem.Ticket.Seat.DisplayValue}");
+
+            <tr>
+                <td class="text-left">@stringBuilder.ToString()</td>
+                <td class="text-right">@orderItem.Ticket.Price.ToString("c")</td>
+            </tr>
+        }
+        <tr>
+            <td class="text-right">Total:</td>
+            <td class="text-right">
+                @Model.OrderTotal.ToString("c") 
+            </td>
+        </tr>
+    </table>
+</div>
+<br />
+
+<div>
+    <a class="btn btn-sm btn-outline-dark"
+        asp-area=""
+        asp-controller="Members"
+        asp-action="OrderList"
+        asp-route-id="@Model.Order.MemberId">Order List</a>
+</div>
