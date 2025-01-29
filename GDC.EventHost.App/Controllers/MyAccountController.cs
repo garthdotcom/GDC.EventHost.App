@@ -38,13 +38,11 @@ namespace GDC.EventHost.App.Controllers
 
             var url = ru.CreateEndSessionUrl(
                 idTokenHint: accessToken,
-                postLogoutRedirectUri: _config["WebUri"]);
+                postLogoutRedirectUri: $"{_config["WebUri"]}/signout-callback-oidc");
 
             return SignOut(new AuthenticationProperties { RedirectUri = url },
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 OpenIdConnectDefaults.AuthenticationScheme);
-
-            // this code does sign the user out, but it does not redirect back
         }
     }
 }
