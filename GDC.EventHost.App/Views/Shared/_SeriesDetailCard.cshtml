@@ -1,0 +1,35 @@
+﻿@model SeriesDetailDto
+
+<div class="card">
+    <a asp-area=""
+       asp-controller="Series"
+       asp-action="Detail"
+       asp-route-id="@Model.Id">
+        @await Component.InvokeAsync("GetImage",
+                 new
+                 {
+                     entityId = @Model.Id,
+                     entityType = "Series",
+                     assetType = Enums.AssetTypeEnum.LargeImage
+                 })
+    </a>
+    <div class="card-body">
+        <h5 class="card-title">
+            <a asp-area=""
+                asp-controller="Series" 
+                asp-action="Detail" 
+                asp-route-id="@Model.Id">
+                @Model.Title</a>
+        </h5>
+        <div class="card-text">
+                    
+            @Model.Description
+
+            @foreach (var eventItem in Model.Events)
+            {
+                <div class="row eh-row-spacer">&nbsp;</div>
+                <partial name="_EventCardSmall" model="eventItem" />
+            }
+        </div>
+    </div>      
+</div>

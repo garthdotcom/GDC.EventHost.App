@@ -73,7 +73,7 @@ namespace GDC.EventHost.App.Controllers
             // verify object returned contains values
             if (!TryValidateModel(ticketDetailDto, nameof(ticketDetailDto)))
             {
-                return RedirectToAction("NotFound", "Home");
+                return RedirectToAction("PageNotFound", "Home");
             }
 
             var ticketDetailViewModel = new TicketDetailVM

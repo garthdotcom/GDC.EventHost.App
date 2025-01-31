@@ -90,7 +90,7 @@ namespace GDC.EventHost.App.Areas.Admin.Controllers
             // verify object returned contains values
             if (!TryValidateModel(eventDetail, nameof(eventDetail)))
             {
-                return RedirectToAction("NotFound", "Home");
+                return RedirectToAction("PageNotFound", "Home");
             }
 
             var eventDetailViewModel = new EventDetailVM

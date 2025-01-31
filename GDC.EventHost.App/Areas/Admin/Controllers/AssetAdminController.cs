@@ -100,7 +100,7 @@ namespace GDC.EventHost.App.Areas.Admin.Controllers
             // verify object returned contains values
             if (!TryValidateModel(assetDetailDto, nameof(assetDetailDto)))
             {
-                return RedirectToAction("NotFound", "Home");
+                return RedirectToAction("PageNotFound", "Home");
             }
 
             var assetDetailViewModel = new AssetDetailVM
