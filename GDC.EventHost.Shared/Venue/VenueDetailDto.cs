@@ -1,4 +1,6 @@
 ﻿using GDC.EventHost.Shared.Performance;
+using GDC.EventHost.Shared.SeatingPlan;
+using GDC.EventHost.Shared.VenueAsset;
 using System.ComponentModel.DataAnnotations;
 using static GDC.EventHost.Shared.Enums;
 
@@ -25,8 +27,8 @@ namespace GDC.EventHost.Shared.Venue
 
         public List<PerformanceDetailDto> Performances { get; set; } = [];
 
-        //public List<VenueAssetDto> VenueAssets { get; set; } = [];
+        public List<VenueAssetDto> VenueAssets { get; set; } = [];
 
-        //public List<SeatingPlanDto> SeatingPlans { get; set; } = [];
+        public List<SeatingPlanDto> SeatingPlans { get; set; } = [];
     }
 }

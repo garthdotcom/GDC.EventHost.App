@@ -14,7 +14,7 @@ using System.Text;
 
 namespace GDC.EventHost.App.Areas.Admin.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "IsAdministrator")]
     [ServiceFilter(typeof(EnsureAccessTokenFilter))]
     [Area("Admin")]
     public class EventAdminController : Controller

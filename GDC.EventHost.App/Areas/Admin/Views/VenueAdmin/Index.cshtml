@@ -1,0 +1,124 @@
+﻿@model VenueListVM
+
+<form method="get">
+    <div class="form-group">
+        <div class="input-group">
+            <input type="search" 
+                   class="form-control" 
+                   placeholder="Enter value to search..." 
+                   asp-for="SearchQuery"
+                   value="@ViewData["CurrentFilter"]" />
+            <span class="input-group-btn">
+                <button class="btn btn-default">
+                    <i class="fas fa-search"></i>
+                </button>
+            </span>
+        </div>
+    </div>
+</form>
+<h4>Venues</h4>
+<br />
+@if (Model.VenueList.Count == 0)
+{
+    <div>
+        <span>Sorry, your search did not return any results. Please try again.</span>
+    </div>
+}
+else
+{
+<table class="table">
+    <tr>
+        <th style="width:300px">
+            <a asp-action="Index" 
+                asp-route-sortOrder="@ViewData["NameSortParm"]"
+                asp-route-searchQuery="@ViewData["CurrentFilter"]">
+                Name
+                <i class="fas fa-sort"></i>
+            </a>
+        </th>
+        <th>
+            <a asp-action="Index" 
+                asp-route-sortOrder="@ViewData["DescriptionSortParm"]"
+                asp-route-searchQuery="@ViewData["CurrentFilter"]">
+                Description
+                <i class="fas fa-sort"></i>
+            </a>
+        </th>
+        <th></th>
+    </tr>
+    @foreach (var venue in Model.VenueList)
+    {
+        <tr>
+            <td>
+                @venue.Name
+            </td>
+            <td>
+                @if (venue.Description.Length > 80)
+                {
+                    @(venue.Description.Substring(0, 80) + "...");
+                }
+                else
+                {
+                    @venue.Description;
+                }
+            </td>
+            <td style="text-align:right">
+                <a asp-area="Admin" 
+                   asp-controller="VenueAdmin" 
+                   asp-action="Detail" 
+                   asp-route-id="@venue.Id">View</a>
+                &nbsp;|&nbsp;
+                <a asp-area="Admin"
+                   asp-controller="VenueAdmin"
+                   asp-action="Edit"
+                   asp-route-id="@venue.Id">Edit</a>
+                &nbsp;|&nbsp;          
+                <a asp-area="Admin" 
+                   asp-controller="VenueAdmin" 
+                   asp-action="Delete" 
+                   asp-route-id="@venue.Id">Delete</a>
+            </td>
+        </tr>
+    }
+    <tr>
+        <td colspan="3" style="text-align:center">
+            @{
+                var prevDisabled = !Model.VenueList.HasPreviousPage ? "disabled" : "";
+                var nextDisabled = !Model.VenueList.HasNextPage ? "disabled" : "";
+            }
+
+            <a asp-action="Index"
+                asp-route-sortOrder="@ViewData["CurrentSort"]"
+                asp-route-pageNumber="@(Model.VenueList.PageIndex - 1)"
+                asp-route-searchQuery="@ViewData["CurrentFilter"]"
+                class="btn btn-sm btn-link text-dark @prevDisabled">
+                @Html.Raw("<")
+            </a>
+
+            <span class="btn btn-sm text-dark">
+                @(Model.VenueList.PageIndex) of @(Model.VenueList.TotalPages)
+            </span>
+
+            <a asp-action="Index"
+                asp-route-sortOrder="@ViewData["CurrentSort"]"
+                asp-route-pageNumber="@(Model.VenueList.PageIndex + 1)"
+                asp-route-searchQuery="@ViewData["CurrentFilter"]"
+                class="btn btn-sm btn-link text-dark @nextDisabled">
+                @Html.Raw(">")
+            </a>
+        </td>
+    </tr>
+</table>
+}
+<br />
+<div>
+    <a class="btn btn-sm btn-outline-dark"
+       asp-area="Admin" 
+       asp-controller="Home"
+       asp-action="Index">Back to Menu</a>
+    &nbsp;
+    <a class="btn btn-sm btn-outline-dark"
+       asp-area="Admin" 
+       asp-controller="VenueAdmin" 
+       asp-action="Edit">Create Venue</a>
+</div>

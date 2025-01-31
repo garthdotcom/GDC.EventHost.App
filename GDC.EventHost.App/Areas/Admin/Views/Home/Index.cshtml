@@ -1,0 +1,156 @@
+﻿@using Microsoft.AspNetCore.Authorization;
+@inject IAuthorizationService AuthorizationService
+
+@{
+    var isAdministratorResult = await AuthorizationService
+        .AuthorizeAsync(User, "IsAdministrator");
+    var canManageUsersResult = await AuthorizationService
+        .AuthorizeAsync(User, "CanManageUsers");
+    var canSendEmailResult = await AuthorizationService
+        .AuthorizeAsync(User, "CanSendEmail");
+}
+
+<h4>Administrator's Menu</h4>
+<br />
+<div class="row row-cols-1 row-cols-md-3">
+
+    <div class="col mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a asp-area="Admin"
+                        asp-controller="EventAdmin" 
+                        asp-action="Index">Events</a>
+                </h5>
+                <p class="card-text">This is a card with supporting text below as a natural lead-in to 
+                    additional content. This content is a little bit longer.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a asp-area="Admin"
+                        asp-controller="SeriesAdmin" 
+                        asp-action="Index">Series</a>
+                </h5>
+                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to 
+                    additional content. This content is a little bit longer.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a asp-area="Admin"
+                        asp-controller="VenueAdmin" 
+                        asp-action="Index">Venues</a>
+                </h5>
+                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row row-cols-1 row-cols-md-3">
+
+    <div class="col mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a asp-area="Admin"
+                        asp-controller="PerformanceTypeAdmin" 
+                        asp-action="Index">Performance Types</a>
+                </h5>
+                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to 
+                additional content. This content is a little bit longer.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a asp-area="Admin"
+                        asp-controller="AssetAdmin" 
+                        asp-action="Index">Assets</a>
+                </h5>
+                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to 
+                    additional content. This content is a little bit longer.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a asp-area="Admin"
+                        asp-controller="SeatingPlanAdmin" 
+                        asp-action="Index">Seating Plans</a>
+                </h5>
+                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to 
+                    additional content. This content is a little bit longer.</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row row-cols-1 row-cols-md-3">
+
+    <div class="col mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a asp-area="Admin"
+                        asp-controller="OrderAdmin" 
+                        asp-action="Index">Orders</a>
+                </h5>
+                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to 
+                additional content. This content is a little bit longer.</p>
+            </div>
+        </div>
+    </div>
+
+    @if (User.Identity?.IsAuthenticated == true && canManageUsersResult.Succeeded)
+    {
+        <div class="col mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a asp-area="Admin"
+                            asp-controller="UserAdmin" 
+                            asp-action="UserManagement">User Manager</a>
+                    </h5>
+                    <p class="card-text">This is a longer card with supporting text below as a natural lead-in to 
+                    additional content. This content is a little bit longer.</p>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (User.Identity?.IsAuthenticated == true && canSendEmailResult.Succeeded)
+    {
+        <div class="col mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a asp-controller="Home" 
+                            asp-action="SendTestEmail">Send Test Mail</a>
+                    </h5>
+                    <p class="card-text">This is a longer card with supporting text below as a natural lead-in to 
+                    additional content. This content is a little bit longer.</p>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<br />
+@ViewBag.Message

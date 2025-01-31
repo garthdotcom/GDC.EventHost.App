@@ -1,0 +1,52 @@
+﻿@model VenueAssetEditVM
+
+<h4>Event / @Model.VenueName / Asset</h4>
+<br />
+<form asp-action="Add" enctype="multipart/form-data" method="post" class="form-horizontal" role="form">
+
+    <div>
+        <strong>Please provide details for this asset:</strong>
+    </div>
+    <br />
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <input asp-for="VenueAsset.VenueId" type="hidden" />
+    <input asp-for="VenueAsset.OrdinalValue" value="1" type="hidden" />
+
+    <div class="form-group">
+        <label asp-for="VenueAsset.AssetId" class="col-md-2 control-label"></label>
+        <div class="col-md-5">
+            <select asp-for="VenueAsset.AssetId" class="form-control"
+                    asp-items="Model.AssetList">
+                <option value="">-- Select One --</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="VenueAsset.AssetTypeId" class="col-md-2 control-label"></label>
+        <div class="col-md-5">
+            <select asp-for="VenueAsset.AssetTypeId" class="form-control" 
+                    asp-items="Html.GetEnumSelectList<Enums.AssetTypeEnum>()">
+                <option>-- Select One --</option>
+            </select>
+        </div>
+    </div>
+
+    <br />
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-5">
+            <a class="btn btn-sm btn-outline-dark"
+               href="javascript:history.go(-1)">Cancel</a>&nbsp;
+            <input class="btn btn-sm btn-outline-dark"
+                   type="submit" value="Save" />&nbsp;
+            <a class="btn btn-sm btn-outline-dark"
+               asp-area="Admin" 
+               asp-controller="AssetAdmin" 
+               asp-action="Edit">Create</a>
+        </div>
+    </div>
+
+</form>

@@ -25,7 +25,7 @@ namespace GDC.EventHost.Shared.Ticket
         [Required(ErrorMessage = "You should enter a Performance Id.")]
         [RegularExpression(@"^[A-Za-z0-9]{8}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{12}$", 
             ErrorMessage = "The Performance Id must be a valid Guid.")]
-        public Guid EventId { get; set; }
+        public Guid PerformanceId { get; set; }
 
         [Display(Name = "Seat")]
         [Required(ErrorMessage = "You should enter a Seat Id.")]

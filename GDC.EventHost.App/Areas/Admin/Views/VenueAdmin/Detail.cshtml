@@ -1,0 +1,124 @@
+﻿@model VenueDetailVM
+
+<h4>Venue / @Model.Venue.Name</h4>
+<br />
+<div>
+    <strong>Description:</strong>
+    @Model.Venue.Description
+</div>
+<br />
+
+<div>
+    <strong>Long Description:</strong>
+    @Model.Venue.LongDescription
+</div>
+<br />
+
+@if (Model.Venue.VenueAssets.Count > 0)
+{
+    <div>
+        <table class="table">
+            <tr>
+                <th>
+                    Asset Name
+                </th>
+                <th>
+                    Type
+                </th>
+                <th></th>
+            </tr>
+            @foreach (var venueAsset in Model.Venue.VenueAssets)
+            {
+                <tr>
+                    <td>
+                        @venueAsset.Name
+                    </td>
+                    <td>
+                        @venueAsset.AssetTypeValue
+                    </td>
+                    <td>
+                        <a asp-area="Admin" 
+                           asp-controller="VenueAssetAdmin" 
+                           asp-action="Detail" 
+                           asp-route-id="@venueAsset.Id">View</a>
+                        &nbsp;|&nbsp;
+                        <a asp-area="Admin" 
+                           asp-controller="VenueAssetAdmin" 
+                           asp-action="Delete" 
+                           asp-route-id="@venueAsset.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+    <br />
+}
+<div>
+    <a class="btn btn-sm btn-outline-dark"
+       asp-area="Admin" 
+       asp-controller="VenueAssetAdmin" 
+       asp-action="Add" 
+       asp-route-venueId="@Model.Venue.Id">Add Asset</a>
+</div>
+<br />
+
+@if (Model.Venue.Performances.Count > 0)
+{
+    <div>
+        <strong>Performances held at this venue:</strong>
+    </div>
+    <br />
+    <div>
+        <table class="table">
+            <tr>
+                <th>
+                    Title
+                </th>
+                <th>
+                    Date and Time
+                </th>
+                <th></th>
+            </tr>
+            @foreach (var performance in Model.Venue.Performances)
+            {
+                <tr>
+                    <td>
+                        @performance.EventTitle
+                    </td>
+                    <td>
+                        @performance.Date.ToString("dddd, dd MMMM yyyy HH:mm")
+                    </td>
+
+                    <td>
+                        <a asp-area="Admin" 
+                           asp-controller="PerformanceAdmin" 
+                           asp-action="Detail" 
+                           asp-route-id="@performance.Id">View</a>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+<br />
+<div>
+    @if (Model.ReturnUrl.Contains("Edit") || Model.ReturnUrl.Contains("Add"))
+    {
+        // we came from an edit page so redirect to venue list page
+        <a class="btn btn-sm btn-outline-dark"
+           asp-area="Admin"
+           asp-controller="VenueAdmin"
+           asp-action="Index">Back</a>
+    }
+    else
+    {
+        <a class="btn btn-sm btn-outline-dark"
+           href="@Model.ReturnUrl">Back</a>
+    }
+    &nbsp;
+    <a class="btn btn-sm btn-outline-dark"
+       asp-area="Admin"
+       asp-controller="VenueAdmin"
+       asp-action="Edit" 
+       asp-route-id="@Model.Venue.Id">Edit</a>
+</div>

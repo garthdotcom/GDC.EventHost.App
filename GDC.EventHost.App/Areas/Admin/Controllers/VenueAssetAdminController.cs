@@ -8,10 +8,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using GDC.EventHost.App.Areas.Admin.ViewModels;
 
 namespace GDC.EventHost.App.Areas.Admin.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "IsAdministrator")]
     [ServiceFilter(typeof(EnsureAccessTokenFilter))]
     [Area("Admin")]
     public class VenueAssetAdminController : Controller

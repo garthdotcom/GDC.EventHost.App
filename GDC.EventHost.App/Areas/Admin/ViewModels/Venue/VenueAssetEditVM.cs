@@ -1,7 +1,7 @@
 ﻿using GDC.EventHost.Shared.VenueAsset;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace GDC.EventHost.App.Admin.ViewModels
+namespace GDC.EventHost.App.Areas.Admin.ViewModels
 {
     public class VenueAssetEditVM
     {

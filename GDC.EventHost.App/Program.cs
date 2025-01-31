@@ -1,13 +1,16 @@
 using Azure.Identity;
 using GDC.EventHost.App;
 using GDC.EventHost.App.ApiServices;
-using GDC.EventHost.App.ApiServices;
+using GDC.EventHost.App.Auth;
 using GDC.EventHost.App.Components;
 using GDC.EventHost.App.Models;
 using GDC.EventHost.App.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
+using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,8 +32,8 @@ builder.Services.AddSingleton(sp =>
 
 builder.Services.AddScoped<IEventHostService, EventHostService>();
 
-// //turn off the automatic claims mapping
-// test JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+// //turn off the automatic claims mapping test
+//JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 builder.Services.AddAuthentication(o =>
 {
@@ -38,8 +41,12 @@ builder.Services.AddAuthentication(o =>
     o.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
 })
     // subsequent requests
-    .AddCookie(o => o.Events.OnSigningOut =
-        async e => await e.HttpContext.RevokeRefreshTokenAsync())
+    .AddCookie(options =>
+    {
+        options.AccessDeniedPath = "/Home/AccessDenied";
+        options.Events.OnSigningOut =
+            async e => await e.HttpContext.RevokeRefreshTokenAsync();
+    })
 
     // first time in
     .AddOpenIdConnect(options =>
@@ -59,11 +66,12 @@ builder.Services.AddAuthentication(o =>
         options.GetClaimsFromUserInfoEndpoint = true;
         options.SaveTokens = true;  // puts the access token in the identity cookie
 
-        // activate these
+        // activate these claims
         options.ClaimActions.MapUniqueJsonKey("membershipnumber", "membershipnumber");
         options.ClaimActions.MapUniqueJsonKey("birthdate", "birthdate");
         options.ClaimActions.MapUniqueJsonKey("role", "role");
-        options.ClaimActions.MapUniqueJsonKey("permission", "permission");
+        options.ClaimActions.MapUniqueJsonKey("manageusers", "manageusers");
+        options.ClaimActions.MapUniqueJsonKey("sendemail", "sendemail");
 
         options.Events = new OpenIdConnectEvents
         {
@@ -81,10 +89,16 @@ builder.Services.AddAuthentication(o =>
         //};
     });
 
+
+// fails when more than one
 builder.Services.AddAuthorizationBuilder()
-    .AddPolicy("IsAdministrator", policy => policy.RequireRole("administrator"))
-    .AddPolicy("ManageUsers", policy => policy.RequireClaim("permission", "manageusers"))
-    .AddPolicy("SendEmail", policy => policy.RequireClaim("permission", "sendemail"));
+    .AddPolicy("IsAdministrator", policy => policy.RequireClaim("role", "admin"))
+    .AddPolicy("CanManageUsers", policy => policy.RequireClaim("manageusers"))
+    .AddPolicy("CanSendEmail", policy => policy.RequireClaim("sendemail"));
+
+// not sure the role one would work because there would be a namespace in front.
+// these work by decorating the controllers methods like:
+// [Authorize(Policy = "CanManageUsers")]
 
 
 

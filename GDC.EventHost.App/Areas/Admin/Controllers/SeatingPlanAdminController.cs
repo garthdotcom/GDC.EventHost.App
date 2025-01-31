@@ -16,10 +16,10 @@ using static GDC.EventHost.Shared.Enums;
 
 namespace GDC.EventHost.App.Areas.Admin.Controllers
 {
-    // during the layout creation process we want to build up a list of SeatPositionsForCreateDto objects
+    // during the seating plan creation process we want to build up a list of SeatPositionsForCreateDto objects
     // which can be included in the SeatingPlanForCreateDto when we are ready to create.
 
-    [Authorize]
+    [Authorize(Policy = "IsAdministrator")]
     [ServiceFilter(typeof(EnsureAccessTokenFilter))]
     [Area("Admin")]
     public class SeatingPlanAdminController : Controller

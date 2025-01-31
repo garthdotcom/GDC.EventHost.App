@@ -17,7 +17,7 @@ using static GDC.EventHost.Shared.Enums;
 
 namespace GDC.EventHost.App.Areas.Admin.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "IsAdministrator")]
     [ServiceFilter(typeof(EnsureAccessTokenFilter))]
     [Area("Admin")]
     public class AssetAdminController : Controller

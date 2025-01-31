@@ -1,0 +1,51 @@
+﻿@model VenueAssetDetailVM
+
+<h4>Event / @Model.VenueName / Asset</h4>
+<br />
+
+<div>
+    <strong>Type:</strong>
+    @Model.VenueAsset.AssetTypeValue
+</div>
+<br />
+<div>
+    <strong>Name:</strong>
+    @Model.VenueAsset.Name
+</div>
+<br />
+<div>
+    <strong>Description:</strong>
+    @Model.VenueAsset.Description
+</div>
+<br />
+<div>
+    <strong>Uri:</strong>
+    @Model.VenueAsset.Uri
+</div>
+<br />
+<div>
+    <strong>Original Image:</strong>
+</div>
+<br />
+<div>
+    <img src="@Url.Content(Model.VenueAsset.Uri)" alt="@Model.VenueAsset.Name"/>
+</div>
+<br />
+
+<div>
+    @if (Model.ReturnUrl.Contains("Add"))
+    {
+        // we came from an edit page so redirect to list page
+        <a class="btn btn-sm btn-outline-dark"
+           asp-area="Admin"
+           asp-controller="VenueAdmin"
+           asp-action="Detail"
+           asp-route-id="@Model.VenueAsset.VenueId">Back</a>
+    }
+    else
+    {
+        <a class="btn btn-sm btn-outline-dark"
+           href="@Model.ReturnUrl">Back</a>
+    }
+</div>
+

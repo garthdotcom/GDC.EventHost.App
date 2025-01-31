@@ -5,6 +5,7 @@ using GDC.EventHost.App.ViewModels.Series;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GDC.EventHost.App.Controllers
 {

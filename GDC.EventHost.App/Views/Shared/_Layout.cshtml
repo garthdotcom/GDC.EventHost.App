@@ -16,9 +16,9 @@
     <link href="~/lib/font-awesome/css/fontawesome.css" rel="stylesheet">
     <link href="~/lib/font-awesome/css/brands.css" rel="stylesheet">
     <link href="~/lib/font-awesome/css/solid.css" rel="stylesheet">
-    <script src="~/lib/dist/jquery/jquery.js"></script>
+    <script src="~/lib/jquery/jquery.js"></script>
     <script src="~/lib/popper.js/umd/popper.min.js"></script>
-    <script src="~/lib/dist/bootstrap/js/bootstrap.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
     <link href="~/css/site.css" rel="stylesheet" />
 </head>
 <body>
@@ -56,19 +56,19 @@
 
                     </ul>
 
-@*                     <ul class="navbar-nav">
-                        @if (SignInManager.IsSignedIn(User) && User.IsInRole("Administrator"))
+                    <ul class="navbar-nav">
+                        @if (User.Claims.Any(c => c.Type == "role" && c.Value.Contains("admin")))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark btn btn-link" asp-area="Admin" 
                                    asp-controller="Home" asp-action="Index">
-                                    <i class="fas fa-cog"></i>
+                                    <i class="fas fa-cog" aria-hidden="true"></i>
                                 </a>
                             </li>
                             @Html.Raw("&nbsp;")
                         }
-                        @await Component.InvokeAsync("ShoppingCartSummary")
-                    </ul>*@
+                        @* @await Component.InvokeAsync("ShoppingCartSummary") *@
+                    </ul>
 
                     <partial name="_LoginPartial" /> 
                 </div>
