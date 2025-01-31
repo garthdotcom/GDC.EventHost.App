@@ -19,11 +19,11 @@ else
         <img src="@Url.Content(Model.Uri)" 
                 alt="@Model.Name" 
                 height="@Model.Height" 
-                width="@Model.Width"
-                style="border-radius:10px"/>
+                width="@Model.Width" />
+                @* style="border-radius:10px"/> *@
     }
     else
     {
-        <img src="@Url.Content(Model.Uri)" alt="@Model.Name" style="max-width:100%; height:auto; border-radius:10px;" />
+        <img src="@Url.Content(Model.Uri)" alt="@Model.Name" style="max-width:100%; height:auto;" />
     }
 }
