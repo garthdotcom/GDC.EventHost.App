@@ -8,14 +8,15 @@ namespace GDC.EventHost.App.Controllers
     {
         public ActionResult Index()
         {
-            var test = User.Identity;
-            var claims = User.Claims;
-            var asfd = User.IsInRole("Administrator");
-
             return View();
         }
 
         public ActionResult AccessDenied()
+        {
+            return View();
+        }
+
+        public ActionResult NotFound()
         {
             return View();
         }

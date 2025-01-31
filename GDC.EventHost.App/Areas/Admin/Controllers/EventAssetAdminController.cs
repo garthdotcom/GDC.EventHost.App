@@ -38,7 +38,7 @@ namespace GDC.EventHost.App.Areas.Admin.Controllers
             // verify object returned contains values
             if (!TryValidateModel(eventAssetDto, nameof(eventAssetDto)))
             {
-                return NotFound();  // todo - create a friendly not found page
+                return RedirectToAction("NotFound", "Home");
             }
 
             var eventAssetDetailVM = new EventAssetDetailVM

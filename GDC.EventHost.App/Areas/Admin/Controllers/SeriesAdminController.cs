@@ -83,7 +83,7 @@ namespace GDC.EventHost.App.Areas.Admin.Controllers
             // verify object returned contains values
             if (!TryValidateModel(seriesDetail, nameof(seriesDetail)))
             {
-                return NotFound();  // todo - create a friendly not found page
+                return RedirectToAction("NotFound", "Home");
             }
 
             var seriesDetailViewModel = new SeriesDetailVM

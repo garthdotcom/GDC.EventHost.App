@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using GDC.EventHost.Shared.VenueAsset;
 
 namespace GDC.EventHost.App.Controllers
 {
