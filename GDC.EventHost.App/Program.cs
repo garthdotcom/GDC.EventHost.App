@@ -1,16 +1,11 @@
-using Azure.Identity;
 using GDC.EventHost.App;
 using GDC.EventHost.App.ApiServices;
-using GDC.EventHost.App.Auth;
 using GDC.EventHost.App.Components;
 using GDC.EventHost.App.Models;
 using GDC.EventHost.App.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
-using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -89,18 +84,10 @@ builder.Services.AddAuthentication(o =>
         //};
     });
 
-
-// fails when more than one
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy("IsAdministrator", policy => policy.RequireClaim("role", "admin"))
     .AddPolicy("CanManageUsers", policy => policy.RequireClaim("manageusers"))
     .AddPolicy("CanSendEmail", policy => policy.RequireClaim("sendemail"));
-
-// not sure the role one would work because there would be a namespace in front.
-// these work by decorating the controllers methods like:
-// [Authorize(Policy = "CanManageUsers")]
-
-
 
 builder.Services.AddHttpClient<EventHostService>();
 
@@ -116,14 +103,12 @@ builder.Services.AddTransient<IEventAssetStorage, FileSystemEventAsset>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 
-
-
-if (builder.Environment.IsProduction())
-{
-    builder.Configuration.AddAzureKeyVault(
-        new Uri($"https://{builder.Configuration["KeyVaultName"]}.vault.azure.net/"),
-        new DefaultAzureCredential());
-}
+//if (builder.Environment.IsProduction())
+//{
+//    builder.Configuration.AddAzureKeyVault(
+//        new Uri($"https://{builder.Configuration["KeyVaultName"]}.vault.azure.net/"),
+//        new DefaultAzureCredential());
+//}
 
 // manage refresh tokens
 builder.Services.AddOpenIdConnectAccessTokenManagement();
