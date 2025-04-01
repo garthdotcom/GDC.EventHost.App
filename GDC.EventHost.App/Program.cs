@@ -3,9 +3,12 @@ using GDC.EventHost.App.ApiServices;
 using GDC.EventHost.App.Components;
 using GDC.EventHost.App.Models;
 using GDC.EventHost.App.Services;
+using IdentityModel;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,8 +30,8 @@ builder.Services.AddSingleton(sp =>
 
 builder.Services.AddScoped<IEventHostService, EventHostService>();
 
-// //turn off the automatic claims mapping test
-//JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+//turn off the automatic claims mapping
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 builder.Services.AddAuthentication(o =>
 {
@@ -84,10 +87,17 @@ builder.Services.AddAuthentication(o =>
         //};
     });
 
-builder.Services.AddAuthorizationBuilder()
-    .AddPolicy("IsAdministrator", policy => policy.RequireClaim("role", "admin"))
-    .AddPolicy("CanManageUsers", policy => policy.RequireClaim("manageusers"))
-    .AddPolicy("CanSendEmail", policy => policy.RequireClaim("sendemail"));
+
+builder.Services.AddAuthorization(o =>
+{
+    o.AddPolicy("IsAdministrator", policy =>
+        policy.RequireRole("admin"));
+    o.AddPolicy("CanManageUsers", policy =>
+        policy.RequireClaim("manageusers"));
+    o.AddPolicy("CanSendEmail", policy =>
+        policy.RequireClaim("sendemail"));
+});
+
 
 builder.Services.AddHttpClient<EventHostService>();
 

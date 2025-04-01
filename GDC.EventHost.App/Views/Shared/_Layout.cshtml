@@ -1,4 +1,5 @@
-﻿@* @using GDC.EventHost.App.Auth
+﻿@using System.Security.Claims
+@* @using GDC.EventHost.App.Auth
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Identity
 
@@ -57,7 +58,7 @@
                     </ul>
 
                     <ul class="navbar-nav">
-                        @if (User.Claims.Any(c => c.Type == "role" && c.Value.Contains("admin")))
+                        @if (User.Claims.Any(c => c.Type == ClaimTypes.Role && c.Value == "admin"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark btn btn-link" asp-area="Admin" 
