@@ -126,21 +126,30 @@
     </div>
 }
 
+<div>
+    <a class="btn btn-sm btn-outline-dark"
+       asp-area="Admin"
+       asp-controller="EventAdmin"
+       asp-action="Edit"
+       asp-route-seriesId="@Model.Series.Id">Add Event</a>
+</div>
+
+
 <br />
 <div>
-    @if (Model.ReturnUrl.Contains("Edit") || Model.ReturnUrl.Contains("Add"))
+@*     @if (Model.ReturnUrl.Contains("Edit") || Model.ReturnUrl.Contains("Add"))
     {
-        // we came from an edit page so redirect to series list page
+        // we came from an edit page so redirect to series list page *@
         <a class="btn btn-sm btn-outline-dark"
            asp-area="Admin"
            asp-controller="SeriesAdmin"
            asp-action="Index">Back</a>
-    }
+@*     }
     else
     {
         <a class="btn btn-sm btn-outline-dark"
            href="@Model.ReturnUrl">Back</a>
-    }
+    } *@
     &nbsp;
     <a class="btn btn-sm btn-outline-dark"
        asp-area="Admin"

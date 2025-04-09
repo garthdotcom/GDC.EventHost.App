@@ -1,0 +1,64 @@
+﻿@using GDC.EventHost.App.Areas.Admin.ViewModels.Performance
+@model PerformanceAddVM
+
+<h4>Create Performance / @Model.PerformanceTitle</h4>
+
+<br />
+
+<form asp-action="Add" method="post" class="form-horizontal" role="form">
+
+    <div>
+        <strong>Please provide details for this performance:</strong>
+    </div>
+    <br />
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="PerformanceForCreate.Date" class="col-md-2 control-label"></label>
+        <div class="col-md-5">
+            <input asp-for="PerformanceForCreate.Date" class="form-control" />
+            <span asp-validation-for="PerformanceForCreate.Date" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 control-label">Event</label>
+        <div class="col-md-5">
+            <input asp-for="PerformanceForCreate.EventId" type="hidden" />
+            <input asp-for="@Model.PerformanceTitle" class="form-control" readonly />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 control-label">Venue</label>
+        <div class="col-md-5">
+            <select asp-for="PerformanceForCreate.VenueId" 
+                asp-items="Model.VenueList" class="form-control">
+                <option value="">-- Select One --</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 control-label">Performance Type</label>
+        <div class="col-md-5">
+            <select asp-for="PerformanceForCreate.PerformanceTypeId" 
+                asp-items="Model.PerformanceTypesList" class="form-control">
+                <option value="">--Select One--</option>
+            </select>
+        </div>
+    </div>
+
+    <br />
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-5">
+            <a class="btn btn-sm btn-outline-dark"
+               href="javascript:history.go(-1)">Cancel</a>&nbsp;
+            <input class="btn btn-sm btn-outline-dark"
+                   type="submit" value="Save" />
+        </div>
+    </div>
+
+</form>

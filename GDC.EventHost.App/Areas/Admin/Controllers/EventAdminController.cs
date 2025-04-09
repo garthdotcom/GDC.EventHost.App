@@ -39,8 +39,12 @@ namespace GDC.EventHost.App.Areas.Admin.Controllers
         {
             ViewData["CurrentFilter"] = searchQuery;
             ViewData["CurrentSort"] = sortOrder;
-            ViewData["EventNameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "event_name_desc" : "";
-            ViewData["SeriesNameSortParm"] = sortOrder == "SeriesName" ? "series_name_desc" : "SeriesName";
+            ViewData["EventNameSortParm"] = String.IsNullOrEmpty(sortOrder) 
+                ? "event_name_desc" 
+                : "";
+            ViewData["SeriesNameSortParm"] = sortOrder == "SeriesName" 
+                ? "series_name_desc" 
+                : "SeriesName";
 
             var uriBuilder = new StringBuilder();
             uriBuilder.Append("/events");
@@ -51,7 +55,8 @@ namespace GDC.EventHost.App.Areas.Admin.Controllers
                 uriBuilder.Append(WebUtility.UrlEncode(searchQuery));
             }
 
-            var eventDtos = await _eventHostService.GetMany<EventDetailDto>(uriBuilder.ToString());
+            var eventDtos = await _eventHostService
+                .GetMany<EventDetailDto>(uriBuilder.ToString());
 
             switch (sortOrder)
             {
@@ -102,10 +107,13 @@ namespace GDC.EventHost.App.Areas.Admin.Controllers
             return View(eventDetailViewModel);
         }
 
-
-        public async Task<ActionResult> Edit(Guid id)
+        public async Task<ActionResult> Edit(Guid id, Guid? seriesId)
         {
-            var evt = await _eventHostService.GetOne<EventForUpdateDto>($"/events/{id}");
+            var evt = (id == Guid.Empty)
+                ? new EventForUpdateDto() { Title = string.Empty }
+                : await _eventHostService.GetOne<EventForUpdateDto>($"/events/{id}");
+
+            //var evt = await _eventHostService.GetOne<EventForUpdateDto>($"/events/{id}");
 
             var eventEditViewModel = new EventEditVM
             {
@@ -124,7 +132,8 @@ namespace GDC.EventHost.App.Areas.Admin.Controllers
 
             if (eventVM.Event.Id == Guid.Empty)
             {
-                var newEvent = await _eventHostService.PostOne<EventForUpdateDto>("/events", stringData);
+                var newEvent = await _eventHostService
+                    .PostOne<EventForUpdateDto>("/events", stringData);
 
                 if (_eventHostService.Error)
                 {
@@ -158,6 +167,26 @@ namespace GDC.EventHost.App.Areas.Admin.Controllers
             };
 
             return View(eventEditViewModel);
+        }
+
+
+        public async Task<ActionResult> Delete(Guid id)
+        {
+            var eventToDelete = await _eventHostService.GetOne<EventDetailDto>($"/events/{id}");
+
+            if (eventToDelete == null)
+            {
+                return RedirectToAction("PageNotFound", "Home");
+            }
+
+            await _eventHostService.DeleteOne($"/events/{id}");
+
+            if (_eventHostService.Error)
+            {
+                ModelState.AddModelError("", _eventHostService.Messages);
+            }
+
+            return RedirectToAction("Index");
         }
 
 

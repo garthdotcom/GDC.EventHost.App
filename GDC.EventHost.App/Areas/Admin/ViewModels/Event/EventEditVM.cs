@@ -10,10 +10,10 @@ namespace GDC.EventHost.App.Areas.Admin.ViewModels
 
         public EventForUpdateDto Event { get; set; }
 
-        public List<EventAssetDto> EventAssets { get; set; }
+        public List<EventAssetDto> EventAssets { get; set; } = [];
 
-        public List<SelectListItem> SeriesList { get; set; }
+        public List<SelectListItem> SeriesList { get; set; } = [];
 
-        public IFormFile FileUpload { get; set; }
+        public IFormFile? FileUpload { get; set; }
     }
 }

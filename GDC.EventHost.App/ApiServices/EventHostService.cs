@@ -106,7 +106,7 @@ namespace GDC.EventHost.App.ApiServices
         public async Task<T> PostOne<T>(string uri, string stringData)
         {
             var request = new HttpRequestMessage(HttpMethod.Post,
-                string.Concat(_config["ApiVersionUriPrefix"], uri))
+                $"{_config["ApiUri"]}/api/{_config["ApiVersionUriPrefix"]}{uri}")
             {
                 Content = new StringContent(stringData, Encoding.UTF8, "application/json")
             };
@@ -146,7 +146,7 @@ namespace GDC.EventHost.App.ApiServices
             Error = false;
 
             var request = new HttpRequestMessage(HttpMethod.Put,
-                string.Concat(_config["ApiVersionUriPrefix"], uri))
+                $"{_config["ApiUri"]}/api/{_config["ApiVersionUriPrefix"]}{uri}")
             {
                 Content = new StringContent(stringData, Encoding.UTF8, "application/json")
             };
@@ -173,7 +173,7 @@ namespace GDC.EventHost.App.ApiServices
             Error = false;
 
             var request = new HttpRequestMessage(HttpMethod.Patch,
-                string.Concat(_config["ApiVersionUriPrefix"], uri))
+                $"{_config["ApiUri"]}/api/{_config["ApiVersionUriPrefix"]}{uri}")
             {
                 Content = new StringContent(stringData, Encoding.UTF8, "application/json")
             };
@@ -197,7 +197,7 @@ namespace GDC.EventHost.App.ApiServices
             Error = false;
 
             var request = new HttpRequestMessage(HttpMethod.Delete,
-                string.Concat(_config["ApiVersionUriPrefix"], uri));
+                $"{_config["ApiUri"]}/api/{_config["ApiVersionUriPrefix"]}{uri}");
 
             var response = await _client.SendAsync(request);
 

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net;
 using System.Text;
+using GDC.EventHost.Shared.Event;
 
 namespace GDC.EventHost.App.Areas.Admin.Controllers
 {
@@ -97,7 +98,11 @@ namespace GDC.EventHost.App.Areas.Admin.Controllers
 
         public async Task<ActionResult> Edit(Guid id)
         {
-            var series = await _eventHostService.GetOne<SeriesForUpdateDto>($"/series/{id}");
+            var series = (id == Guid.Empty)
+                ? new SeriesForUpdateDto() { Title = string.Empty } 
+                : await _eventHostService.GetOne<SeriesForUpdateDto>($"/series/{id}");
+
+            //var series = await _eventHostService.GetOne<SeriesForUpdateDto>($"/series/{id}");
 
             var seriesEditViewModel = new SeriesEditVM
             {
@@ -114,7 +119,6 @@ namespace GDC.EventHost.App.Areas.Admin.Controllers
             return View(seriesEditViewModel);
         }
 
-
         [HttpPost]
         public async Task<ActionResult> Edit(SeriesForUpdateDto series)
         {
@@ -122,7 +126,8 @@ namespace GDC.EventHost.App.Areas.Admin.Controllers
 
             if (series.Id == Guid.Empty)
             {
-                var newSeries = await _eventHostService.PostOne<SeriesForUpdateDto>("/series", stringData);
+                var newSeries = await _eventHostService
+                    .PostOne<SeriesForUpdateDto>("/series", stringData);
 
                 if (_eventHostService.Error)
                 {

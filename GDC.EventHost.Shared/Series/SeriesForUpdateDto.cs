@@ -22,7 +22,7 @@ namespace GDC.EventHost.Shared.Series
         public string? LongDescription { get; set; }
 
         [Display(Name = "Start Date")]
-        [DateIsFutureOrNull]
+        //[DateIsFutureOrNull]
         public DateTime? StartDate { get; set; }
 
         [Display(Name = "End Date")]
@@ -31,8 +31,8 @@ namespace GDC.EventHost.Shared.Series
         public DateTime? EndDate { get; set; }
 
         [Display(Name = "Status Id")]
-        [Required(ErrorMessage = "You should enter a Status Id.")]
-        [StatusIsValid]
-        public required StatusEnum StatusId { get; set; }
+        //[Required(ErrorMessage = "You should enter a Status Id.")]
+        //[StatusIsValid]
+        public StatusEnum? StatusId { get; set; }
     }
 }

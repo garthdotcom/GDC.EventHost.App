@@ -100,31 +100,31 @@
                 </th>
                 <th></th>
             </tr>
-            @foreach (var eventItem in Model.Event.Performances)
+            @foreach (var performance in Model.Event.Performances)
             {
                 <tr>
                     <td>
-                        @eventItem.Date.ToString("dddd, dd MMMM yyyy HH:mm")
+                        @performance.Date.ToString("dddd, dd MMMM yyyy HH:mm")
                     </td>
                     <td>
-                        @eventItem.VenueName
+                        @performance.VenueName
                     </td>
                     <td>
                         <a asp-area="Admin" 
-                           asp-controller="EventAdmin" 
-                           asp-action="Detail" 
-                           asp-route-id="@eventItem.Id">View</a>
+                           asp-controller="PerformanceAdmin" 
+                           asp-action="Detail"
+                           asp-route-id="@performance.Id">View</a>
                         &nbsp;|&nbsp;
                         <a asp-area="Admin" 
-                           asp-controller="EventAdmin" 
+                           asp-controller="PerformanceAdmin" 
                            asp-action="Edit" 
-                           asp-route-id="@eventItem.Id"
+                           asp-route-id="@performance.Id"
                            asp-route-eventId="@Model.Event.Id">Edit</a>
                         &nbsp;|&nbsp;
                         <a asp-area="Admin" 
-                           asp-controller="EventAdmin" 
+                           asp-controller="PerformanceAdmin" 
                            asp-action="Delete" 
-                           asp-route-id="@eventItem.Id">Delete</a>
+                           asp-route-id="@performance.Id">Delete</a>
                     </td>
                 </tr>
             }
@@ -134,9 +134,9 @@
 <div>
     <a class="btn btn-sm btn-outline-dark"
        asp-area="Admin" 
-       asp-controller="EventAdmin" 
-       asp-action="Edit" 
-       asp-route-eventsummaryId="@Model.Event.Id">Add Date</a>
+       asp-controller="PerformanceAdmin" 
+       asp-action="Add" 
+       asp-route-eventId="@Model.Event.Id">Add Performance</a>
 </div>
 <br />
 <div>
@@ -144,19 +144,19 @@
 </div>
 <br />
 <div>
-    @if (Model.ReturnUrl.Contains("Edit") || Model.ReturnUrl.Contains("Add"))
-    {
-        // we came from an edit page so redirect to summary list page
+@*     @if (Model.ReturnUrl.Contains("Edit") || Model.ReturnUrl.Contains("Add"))
+    { *@
+        @* // we came from an edit page so redirect to event list page *@
         <a class="btn btn-sm btn-outline-dark"
            asp-area="Admin"
            asp-controller="EventAdmin"
            asp-action="Index">Back</a>
-    }
+@*     }
     else
     {
         <a class="btn btn-sm btn-outline-dark"
            href="@Model.ReturnUrl">Back</a>
-    }
+    } *@
     &nbsp;
     <a class="btn btn-sm btn-outline-dark"
        asp-area="Admin"

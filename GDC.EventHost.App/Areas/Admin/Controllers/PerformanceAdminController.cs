@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Net;
 using System.Text;
+using GDC.EventHost.App.Areas.Admin.ViewModels.Performance;
 
 namespace GDC.EventHost.App.Areas.Admin.Controllers
 {
@@ -47,17 +48,19 @@ namespace GDC.EventHost.App.Areas.Admin.Controllers
                 uriBuilder.Append(WebUtility.UrlEncode(searchQuery));
             }
 
-            var eventListViewModel = new PerformanceListVM
+            var performanceListViewModel = new PerformanceListVM
             {
-                PerformanceDetails = await _eventHostService.GetMany<PerformanceDetailDto>(uriBuilder.ToString())
+                PerformanceDetails = await _eventHostService
+                    .GetMany<PerformanceDetailDto>(uriBuilder.ToString())
             };
 
-            return View(eventListViewModel);
+            return View(performanceListViewModel);
         }
 
         public async Task<ActionResult> Detail(Guid id)
         {
-            var performanceDetail = await _eventHostService.GetOne<PerformanceDetailDto>($"/performances/{id}");
+            var performanceDetail = await _eventHostService
+                .GetOne<PerformanceDetailDto>($"/performances/{id}");
 
             // verify object returned contains values
             if (!TryValidateModel(performanceDetail, nameof(performanceDetail)))
@@ -65,7 +68,8 @@ namespace GDC.EventHost.App.Areas.Admin.Controllers
                 return NotFound();  // todo - log this
             }
 
-            // user may choose to create a new seatingPlan. clear the session so no leftover positions exist
+            // user may choose to create a new seatingPlan.
+            // clear the session so no leftover positions exist
             HttpContext.Session.Clear();
 
             var performanceDetailViewModel = new PerformanceDetailVM
@@ -77,9 +81,26 @@ namespace GDC.EventHost.App.Areas.Admin.Controllers
             return View(performanceDetailViewModel);
         }
 
+        public async Task<ActionResult> Add(Guid eventId)
+        {
+            var performanceAddViewModel = new PerformanceAddVM
+            {
+                PerformanceForCreate = new PerformanceForCreateDto()
+                {
+                    EventId = eventId
+                },
+                PerformanceTypesList = await BuildPerformanceTypesList(),
+                VenueList = await BuildVenueList(),
+                PerformanceTitle = await GetEventTitle(eventId)
+            };
+            return View(performanceAddViewModel);
+        }
+
+
         public async Task<ActionResult> Edit(Guid id, Guid eventId)
         {
-            var performanceForUpdate = await _eventHostService.GetOne<PerformanceForUpdateDto>($"/performances/{id}");
+            var performanceForUpdate = await _eventHostService
+                .GetOne<PerformanceForUpdateDto>($"/performances/{id}");
 
             // unable to add a seatingPlan here since the venue can be changed and we are not using extra js
             // add an extra route from the detail page where this is static
@@ -103,26 +124,56 @@ namespace GDC.EventHost.App.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        public async Task<ActionResult> Add(PerformanceForCreateDto performanceForCreate)
+        {
+            string stringData = JsonConvert.SerializeObject(performanceForCreate);
+
+            var newEvent = await _eventHostService
+                .PostOne<PerformanceDetailDto>("/performances", stringData);
+
+            if (_eventHostService.Error)
+            {
+                ModelState.AddModelError("", _eventHostService.Messages);
+            }
+
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Detail", new { id = newEvent.Id });
+            }
+
+            var performanceAddViewModel = new PerformanceAddVM
+            {
+                PerformanceForCreate = performanceForCreate,
+                PerformanceTypesList = await BuildPerformanceTypesList(),
+                VenueList = await BuildVenueList(),
+                PerformanceTitle = await GetEventTitle(performanceForCreate.EventId)
+            };
+
+            return View(performanceAddViewModel);
+        }
+
+
+        [HttpPost]
         public async Task<ActionResult> Edit(PerformanceForUpdateDto performanceForUpdate)
         {
             string stringData = JsonConvert.SerializeObject(performanceForUpdate);
 
-            if (performanceForUpdate.Id == Guid.Empty)
-            {
-                var newEvent = await _eventHostService.PostOne<PerformanceDetailDto>("/performances", stringData);
+            //if (performanceForUpdate.Id == Guid.Empty)
+            //{
+            //    var newEvent = await _eventHostService.PostOne<PerformanceDetailDto>("/performances", stringData);
 
-                if (_eventHostService.Error)
-                {
-                    ModelState.AddModelError("", _eventHostService.Messages);
-                }
+            //    if (_eventHostService.Error)
+            //    {
+            //        ModelState.AddModelError("", _eventHostService.Messages);
+            //    }
 
-                if (ModelState.IsValid)
-                {
-                    return RedirectToAction("Detail", new { id = newEvent.Id });
-                }
-            }
-            else
-            {
+            //    if (ModelState.IsValid)
+            //    {
+            //        return RedirectToAction("Detail", new { id = newEvent.Id });
+            //    }
+            //}
+            //else
+            //{
                 await _eventHostService.PutOne($"/performances/{performanceForUpdate.Id}", stringData);
 
                 if (_eventHostService.Error)
@@ -134,7 +185,7 @@ namespace GDC.EventHost.App.Areas.Admin.Controllers
                 {
                     return RedirectToAction("Detail", new { id = performanceForUpdate.Id });
                 }
-            }
+           // }
 
             var performanceEditViewModel = new PerformanceEditVM
             {
